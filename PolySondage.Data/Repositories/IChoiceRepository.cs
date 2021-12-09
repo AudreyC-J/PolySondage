@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PolySondage.Data
+namespace PolySondage.Data.Repositories
 {
-    public class Class1
+    public interface IChoiceRepository
     {
     }
 }

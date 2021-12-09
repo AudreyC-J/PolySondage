@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolySondage", "PolySondage\PolySondage.csproj", "{D17AF9B4-01BC-45E9-B7E3-FC0B2DF7C2E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolySondage", "PolySondage\PolySondage.csproj", "{D17AF9B4-01BC-45E9-B7E3-FC0B2DF7C2E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolySondage.Data", "PolySondage.Data\PolySondage.Data.csproj", "{BA23421E-2577-4B41-800D-A0E2FA90A90D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolySondage.Services", "PolySondage.Services\PolySondage.Services.csproj", "{EB2BAA1F-5E3E-412D-A7B3-B3A76683C3ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolySondage.Services", "PolySondage.Services\PolySondage.Services.csproj", "{EB2BAA1F-5E3E-412D-A7B3-B3A76683C3ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolySondage.Data", "PolySondage.Data\PolySondage.Data.csproj", "{132655BC-2E02-4E47-B166-D66CBF4B9282}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,14 @@ Global
 		{D17AF9B4-01BC-45E9-B7E3-FC0B2DF7C2E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D17AF9B4-01BC-45E9-B7E3-FC0B2DF7C2E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D17AF9B4-01BC-45E9-B7E3-FC0B2DF7C2E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA23421E-2577-4B41-800D-A0E2FA90A90D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA23421E-2577-4B41-800D-A0E2FA90A90D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA23421E-2577-4B41-800D-A0E2FA90A90D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA23421E-2577-4B41-800D-A0E2FA90A90D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EB2BAA1F-5E3E-412D-A7B3-B3A76683C3ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EB2BAA1F-5E3E-412D-A7B3-B3A76683C3ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB2BAA1F-5E3E-412D-A7B3-B3A76683C3ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB2BAA1F-5E3E-412D-A7B3-B3A76683C3ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{132655BC-2E02-4E47-B166-D66CBF4B9282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{132655BC-2E02-4E47-B166-D66CBF4B9282}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{132655BC-2E02-4E47-B166-D66CBF4B9282}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{132655BC-2E02-4E47-B166-D66CBF4B9282}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
