@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace PolySondage.Data.Models
 {
-    class Vote
+    public class Vote
     {
         public int IdPoll { get; set; }
         public int IdUser { get; set; }
-        public List<int> Choices { get; set; } //IdChoice List 
+        public List<Choice> Choices { get; set; }
     }
 }

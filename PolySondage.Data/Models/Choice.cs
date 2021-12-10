@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PolySondage.Data.Models
 {
-    class Choice
+    public class Choice
     {
         [Key]
         public int IdChoice { get; set; }

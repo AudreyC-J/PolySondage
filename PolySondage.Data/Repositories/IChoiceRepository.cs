@@ -8,5 +8,7 @@ namespace PolySondage.Data.Repositories
 {
     public interface IChoiceRepository
     {
-    }
+        Task<int> GetVotebyIdAsync(int idChoice);
+        Task<int> GetNumberVotePollAsync(int idPoll);
+    }   
 }
