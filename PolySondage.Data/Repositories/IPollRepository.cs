@@ -14,6 +14,8 @@ namespace PolySondage.Data.Repositories
         Task DeactivatePollAsync(int idPoll);
         Task<List<Poll>> GetPollByCreatorAsync(int idCreator);
         Task<bool> IsPollActivateAsync(int idPoll);
+        Task<int> GetVotebyChoiceAsync(int idChoice);
+        Task<int> GetNumberVotePollAsync(int idPoll);
     }
 }
  

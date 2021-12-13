@@ -15,5 +15,13 @@ namespace PolySondage.Data
         {
 
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Vote>().HasKey(table => new {
+                table.IdPoll,
+                table.IdUser
+            });
+        }
     }
 }

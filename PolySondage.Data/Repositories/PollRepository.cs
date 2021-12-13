@@ -27,6 +27,12 @@ namespace PolySondage.Data.Repositories
             {
                 await _dbcontext.Choices.AddAsync(c);
             }
+
+            User u = await _dbcontext.Users.FirstOrDefaultAsync(u => u.IdUser == poll.IdUser);
+            if (u == default(User))
+                throw new ArgumentException(nameof(u));
+            u.Created.Add(poll);
+
             await _dbcontext.SaveChangesAsync();
         }
 
@@ -61,6 +67,26 @@ namespace PolySondage.Data.Repositories
                 throw new ArgumentNullException(nameof(p));
 
             return p.Activate;
+        }
+
+        public async Task<int> GetNumberVotePollAsync(int idPoll)
+        {
+            Poll p = await _dbcontext.Polls.FirstOrDefaultAsync(p => p.IdPoll == idPoll);
+            if (p == default(Poll))
+                throw new ArgumentException(nameof(p));
+
+            int rslt = 0;
+            foreach (Choice c in p.Choices)
+            {
+                rslt += c.Vote;
+            }
+            return rslt;
+        }
+
+        public async Task<int> GetVotebyChoiceAsync(int idChoice)
+        {
+            Choice c = await _dbcontext.Choices.FirstOrDefaultAsync(c => c.IdChoice == idChoice);
+            return c.Vote;
         }
     }
 }

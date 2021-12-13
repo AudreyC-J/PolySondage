@@ -54,16 +54,17 @@ namespace PolySondage.Data.Repositories
 
             await _dbcontext.SaveChangesAsync();
         }
+
         public async Task<List<Poll>> GetPaticipatedPollsByIdUserAsync(int idUser)
         {
             List<Vote> vote = await _dbcontext.Votes.Include(v => v.IdUser == idUser).ToListAsync();
             List<Poll> p = new List<Poll>();
-            foreach (Vote v in vote) { 
+            foreach (Vote v in vote)
+            {
                 Poll tmp = await _dbcontext.Polls.FirstAsync(t => t.IdPoll == v.IdPoll);
                 p.Add(tmp);
             }
             return p;
         }
-        
     }
 }

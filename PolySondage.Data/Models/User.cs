@@ -16,7 +16,7 @@ namespace PolySondage.Data.Models
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }
-        public List<int> Created { get; set; } //IdPoll List created by user
+        public List<Poll> Created { get; set; }
 
     }
 }
