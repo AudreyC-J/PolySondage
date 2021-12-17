@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PolySondage.Data.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,9 @@ namespace PolySondage
         {
             var cn = Configuration.GetConnectionString("mainDb");
 
+            services.AddScoped<Data.Repositories.IPollRepository, PollRepository>();
+            services.AddScoped<Data.Repositories.IVoteRepository, VoteRepository>();
+            services.AddScoped<Data.Repositories.IUserRepository, UserRepository>();
             services.AddControllersWithViews();
 
             services.AddDbContext<Data.ApplicationDbContext>(options => {

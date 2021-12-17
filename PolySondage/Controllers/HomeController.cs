@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PolySondage.Data.Repositories;
 using PolySondage.Models;
+using PolySondage.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,13 +15,22 @@ namespace PolySondage.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IPollRepository _pollRepo;
+        private readonly IUserRepository _userRepo;
+        private readonly IVoteRepository _voteRepo;
+
+        public HomeController(ILogger<HomeController> logger, IPollRepository pollrepo, IUserRepository userrepo, IVoteRepository voterepo)
         {
             _logger = logger;
+            _pollRepo = pollrepo;
+            _userRepo = userrepo;
+            _voteRepo = voterepo;
         }
 
         public IActionResult Index()
         {
+            TestDataBase tes = new TestDataBase(_pollRepo, _userRepo, _voteRepo);
+            tes.test();
             return View();
         }
 

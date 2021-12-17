@@ -16,15 +16,19 @@ namespace PolySondage.Data.Repositories
             _dbcontext = db;
         }
 
-        public async Task AddPollAsync(Poll poll)
+        public async Task<int> AddPollAsync(Poll poll)
         {
             if (poll == null)
                 throw new ArgumentNullException(nameof(poll));
 
+            poll.Activate = true;
             await _dbcontext.Polls.AddAsync(poll);
+            await _dbcontext.SaveChangesAsync();
 
             foreach (Choice c in poll.Choices) 
             {
+                c.IdPoll = poll.IdPoll;
+                c.Vote = 0;
                 await _dbcontext.Choices.AddAsync(c);
             }
 
@@ -34,6 +38,7 @@ namespace PolySondage.Data.Repositories
             u.Created.Add(poll);
 
             await _dbcontext.SaveChangesAsync();
+            return poll.IdPoll;
         }
 
         public async Task DeactivatePollAsync(int idPoll)
@@ -51,7 +56,7 @@ namespace PolySondage.Data.Repositories
         }
 
 
-        public Task<List<Poll>> GetPollByCreatorAsync(int idCreator)
+        public Task<List<Poll>> GetPollCreatorAsync(int idCreator)
             => _dbcontext.Polls.Include(p => p.IdUser == idCreator).ToListAsync();
 
         public Task<Poll> GetPollByIdAsync(int idPoll)
@@ -69,24 +74,10 @@ namespace PolySondage.Data.Repositories
             return p.Activate;
         }
 
-        public async Task<int> GetNumberVotePollAsync(int idPoll)
+        public async Task<int> GetNumberUserVotePollAsync(int idPoll)
         {
-            Poll p = await _dbcontext.Polls.FirstOrDefaultAsync(p => p.IdPoll == idPoll);
-            if (p == default(Poll))
-                throw new ArgumentException(nameof(p));
-
-            int rslt = 0;
-            foreach (Choice c in p.Choices)
-            {
-                rslt += c.Vote;
-            }
-            return rslt;
-        }
-
-        public async Task<int> GetVotebyChoiceAsync(int idChoice)
-        {
-            Choice c = await _dbcontext.Choices.FirstOrDefaultAsync(c => c.IdChoice == idChoice);
-            return c.Vote;
+            List<Vote> v = _dbcontext.Votes.Include(p => p.IdPoll == idPoll).ToList();
+            return v.Count();
         }
     }
 }

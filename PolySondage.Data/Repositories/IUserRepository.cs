@@ -9,8 +9,8 @@ namespace PolySondage.Data.Repositories
 {
     public interface IUserRepository
     {
-        Task AddUserAsync(User user);
+        Task<int> AddUserAsync(User user);
         Task<User> getUserByIdAsync(int idUser);
-
+        Task<int> connectUserAsync(string mail, string mdp);
     }
 }

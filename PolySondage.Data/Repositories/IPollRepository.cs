@@ -10,12 +10,10 @@ namespace PolySondage.Data.Repositories
     public interface IPollRepository
     {
         Task<Poll> GetPollByIdAsync(int idPoll);
-        Task AddPollAsync(Poll poll);
+        Task<int> AddPollAsync(Poll poll);
         Task DeactivatePollAsync(int idPoll);
-        Task<List<Poll>> GetPollByCreatorAsync(int idCreator);
         Task<bool> IsPollActivateAsync(int idPoll);
-        Task<int> GetVotebyChoiceAsync(int idChoice);
-        Task<int> GetNumberVotePollAsync(int idPoll);
+        Task<int> GetNumberUserVotePollAsync(int idPoll);
     }
 }
  

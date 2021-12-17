@@ -11,12 +11,15 @@ namespace PolySondage.Data.Models
     {
         [Key]
         public int IdPoll { get; set; }
+        [Required]
         public int IdUser { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]
         public List<Choice> Choices { get; set; }
+        [Required]
         public bool Unique { get; set; } // true : unique, false : multiple
+        [Required]
         public bool Activate { get; set; } // false: off ,true : on
     }
 }

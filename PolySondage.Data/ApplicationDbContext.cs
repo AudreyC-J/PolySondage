@@ -22,6 +22,10 @@ namespace PolySondage.Data
                 table.IdPoll,
                 table.IdUser
             });
+
+            builder.Entity<User>()
+              .HasIndex(u => u.Email)
+              .IsUnique();
         }
     }
 }
