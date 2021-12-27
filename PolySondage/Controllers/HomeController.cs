@@ -29,8 +29,8 @@ namespace PolySondage.Controllers
 
         public IActionResult Index()
         {
-            TestDataBase tes = new TestDataBase(_pollRepo, _userRepo, _voteRepo);
-            tes.test();
+           TestDataBase tes = new TestDataBase(_pollRepo, _userRepo, _voteRepo);
+           tes.test();
             return View();
         }
 

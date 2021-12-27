@@ -20,24 +20,23 @@ namespace PolySondage.Data.Repositories
         {
             if (poll == null)
                 throw new ArgumentNullException(nameof(poll));
+            User u = await _dbcontext.Users.FirstOrDefaultAsync(u => u.IdUser == poll.IdUser);
+            poll.Creator = u;
 
-            poll.Activate = true;
             await _dbcontext.Polls.AddAsync(poll);
             await _dbcontext.SaveChangesAsync();
 
-            foreach (Choice c in poll.Choices) 
+            /*foreach (Choice c in poll.Choices)
             {
                 c.IdPoll = poll.IdPoll;
-                c.Vote = 0;
-                await _dbcontext.Choices.AddAsync(c);
-            }
+            }*/
 
-            User u = await _dbcontext.Users.FirstOrDefaultAsync(u => u.IdUser == poll.IdUser);
+            /*User u = await _dbcontext.Users.FirstOrDefaultAsync(u => u.IdUser == poll.IdUser);
             if (u == default(User))
                 throw new ArgumentException(nameof(u));
             u.Created.Add(poll);
 
-            await _dbcontext.SaveChangesAsync();
+            await _dbcontext.SaveChangesAsync();*/
             return poll.IdPoll;
         }
 

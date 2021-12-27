@@ -12,9 +12,9 @@ namespace PolySondage.Services
         private readonly IPollRepository _pollRepo;
         private readonly IUserRepository _userRepo;
         private readonly IVoteRepository _voteRepo;
-        private int user1;
-        private int user2;
-        private int user3;
+        private int user1 = 1;
+        private int user2 = 2;
+        private int user3 = 3;
         private int poll1;
         private int poll2;
         private int poll3;
@@ -30,18 +30,18 @@ namespace PolySondage.Services
         public async Task test()
         {
             createdBaseExemple().Wait();
-            Debug.WriteLine("Base créer");
+            /*Debug.WriteLine("Base créer");
             await testUser();
             Debug.WriteLine("Fin erreur Poll");
             await testPoll();
             Debug.WriteLine("Fin erreur User");
             await testVote();
-            Debug.WriteLine("Fin erreur Vote");
+            Debug.WriteLine("Fin erreur Vote");*/
         }
 
         private async Task createdBaseExemple()
         {
-            User u1 = new User();
+            /*User u1 = new User();
             u1.Email = "user1@mail.fr";
             u1.Password = "123";
             User u2 = new User();
@@ -54,10 +54,15 @@ namespace PolySondage.Services
             int id1 = await _userRepo.AddUserAsync(u1);
             int id2 = await _userRepo.AddUserAsync(u2);
             int id3 = await _userRepo.AddUserAsync(u3);
-            Debug.WriteLine("id user 1 " + id1 + "/n id user 2 " + id2 + "/n id user 3 " + id3);
+            Debug.WriteLine("id user 1 " + id1 + "\n id user 2 " + id2 + "\n id user 3 " + id3);
             user1 = id1;
             user2 = id2;
-            user3 = id3;
+            user3 = id3;*/
+            int id1 = user1;
+            int id2 = user2;
+            int id3 = user3;
+
+
 
             List<Choice> c = new List<Choice>();
             Choice tmp = new Choice();

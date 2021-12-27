@@ -10,8 +10,8 @@ using PolySondage.Data;
 namespace PolySondage.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211213143248_FirstMig")]
-    partial class FirstMig
+    [Migration("20211223145859_First")]
+    partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -66,6 +66,9 @@ namespace PolySondage.Data.Migrations
                     b.Property<bool>("Activate")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("CreatorIdUser")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdUser")
                         .HasColumnType("int");
 
@@ -76,12 +79,9 @@ namespace PolySondage.Data.Migrations
                     b.Property<bool>("Unique")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("UserIdUser")
-                        .HasColumnType("int");
-
                     b.HasKey("IdPoll");
 
-                    b.HasIndex("UserIdUser");
+                    b.HasIndex("CreatorIdUser");
 
                     b.ToTable("Polls");
                 });
@@ -95,13 +95,16 @@ namespace PolySondage.Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdUser");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -132,9 +135,11 @@ namespace PolySondage.Data.Migrations
 
             modelBuilder.Entity("PolySondage.Data.Models.Poll", b =>
                 {
-                    b.HasOne("PolySondage.Data.Models.User", null)
+                    b.HasOne("PolySondage.Data.Models.User", "Creator")
                         .WithMany("Created")
-                        .HasForeignKey("UserIdUser");
+                        .HasForeignKey("CreatorIdUser");
+
+                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("PolySondage.Data.Models.Poll", b =>

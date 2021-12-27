@@ -13,6 +13,7 @@ namespace PolySondage.Data.Models
         public int IdPoll { get; set; }
         [Required]
         public int IdUser { get; set; }
+        public User Creator { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]
@@ -21,5 +22,11 @@ namespace PolySondage.Data.Models
         public bool Unique { get; set; } // true : unique, false : multiple
         [Required]
         public bool Activate { get; set; } // false: off ,true : on
+
+        public Poll() 
+        {
+            Activate = true;
+            Choices = new List<Choice>();
+        }
     }
 }

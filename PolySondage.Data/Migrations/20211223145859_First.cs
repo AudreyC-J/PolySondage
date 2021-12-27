@@ -2,7 +2,7 @@
 
 namespace PolySondage.Data.Migrations
 {
-    public partial class FirstMig : Migration
+    public partial class First : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace PolySondage.Data.Migrations
                 {
                     IdUser = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -39,17 +39,17 @@ namespace PolySondage.Data.Migrations
                     IdPoll = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdUser = table.Column<int>(type: "int", nullable: false),
+                    CreatorIdUser = table.Column<int>(type: "int", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Unique = table.Column<bool>(type: "bit", nullable: false),
-                    Activate = table.Column<bool>(type: "bit", nullable: false),
-                    UserIdUser = table.Column<int>(type: "int", nullable: true)
+                    Activate = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Polls", x => x.IdPoll);
                     table.ForeignKey(
-                        name: "FK_Polls_Users_UserIdUser",
-                        column: x => x.UserIdUser,
+                        name: "FK_Polls_Users_CreatorIdUser",
+                        column: x => x.CreatorIdUser,
                         principalTable: "Users",
                         principalColumn: "IdUser",
                         onDelete: ReferentialAction.Restrict);
@@ -96,9 +96,15 @@ namespace PolySondage.Data.Migrations
                 columns: new[] { "VoteIdPoll", "VoteIdUser" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Polls_UserIdUser",
+                name: "IX_Polls_CreatorIdUser",
                 table: "Polls",
-                column: "UserIdUser");
+                column: "CreatorIdUser");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

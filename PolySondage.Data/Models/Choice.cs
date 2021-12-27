@@ -13,8 +13,13 @@ namespace PolySondage.Data.Models
         public int IdChoice { get; set; }
         public int IdPoll { get; set; }
         [Required]
+        public Poll Poll { get; set; }
         public string Details { get; set; }
         public int Vote { get; set; }
 
+        public Choice()
+        {
+            Vote = 0;
+        }
     }
 }
