@@ -14,8 +14,10 @@ namespace PolySondage.Data.Models
         public int IdUser { get; set; }
         [EmailAddress]
         [Required]
+        [StringLength(50)]
         public string Email { get; set; }
         [Required]
+        [StringLength(50)]
         public string Password { get; set; }
         public List<Poll> Created { get; set; }
 

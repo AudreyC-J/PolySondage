@@ -9,8 +9,8 @@ namespace PolySondage.Data.Repositories
 {
     public interface IVoteRepository
     {
-        Task AddVoteAsync(Vote vote);
-        Task ChangeVoteAsync(Vote vote);
+        Task AddVoteAsync(List<Choice> choice, int idUser, int idPoll);
+        Task ChangeVoteAsync(List<Choice> choice, int idUser, int idPoll);
         Task<List<Poll>> GetPaticipatedPollsByIdUserAsync(int idUser);
     }
 }

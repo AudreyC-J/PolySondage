@@ -9,9 +9,9 @@ namespace PolySondage.Data.Models
 {
     public class Vote
     {
-        public int IdPoll { get; set; }
+        [Key]
+        public int IdVote { get; set; }
         public Poll Poll { get; set; }
-        public int IdUser { get; set; }
         public User User { get; set; }
         [Required]
         public List<Choice> Choices { get; set; }

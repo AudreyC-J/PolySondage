@@ -41,7 +41,7 @@ namespace PolySondage.Services
 
         private async Task createdBaseExemple()
         {
-            /*User u1 = new User();
+           /* User u1 = new User();
             u1.Email = "user1@mail.fr";
             u1.Password = "123";
             User u2 = new User();
@@ -74,19 +74,17 @@ namespace PolySondage.Services
             c.Add(tmp);
 
             Poll p = new Poll();
-            p.IdUser = id1;
             p.Unique = true;
             p.Choices = c;
             p.Title = "S1";
-            int s1 = await _pollRepo.AddPollAsync(p);
+            int s1 = await _pollRepo.AddPollAsync(p,id1);
 
             p.Unique = false;
             p.Title = "S2";
-            int s2 = await _pollRepo.AddPollAsync(p);
+            int s2 = await _pollRepo.AddPollAsync(p,id1);
 
-            p.IdUser = id2;
             p.Title = "S3";
-            int s3 = await _pollRepo.AddPollAsync(p);
+            int s3 = await _pollRepo.AddPollAsync(p,id2);
 
             Debug.WriteLine("Sondage 1 " + s1 + " Sondage 2 " + s2 + " Sondage 3 " + s3);
             poll1 = s1;
@@ -96,40 +94,31 @@ namespace PolySondage.Services
 
             Vote v = new Vote();
 
-            v.IdUser = id1;
-            v.IdPoll = s1;
             v.Choices.Add(c[0]);
-            await _voteRepo.AddVoteAsync(v);
+            await _voteRepo.AddVoteAsync(v.Choices,id1,s1);
 
-            v.IdUser = id3;
-            await _voteRepo.AddVoteAsync(v);
+            await _voteRepo.AddVoteAsync(v.Choices, id3, s1);
 
-            v.IdUser = id2;
             v.Choices.RemoveAt(0);
             v.Choices.Add(c[1]);
-            await _voteRepo.AddVoteAsync(v);
+            await _voteRepo.AddVoteAsync(v.Choices, id2, s1);
 
-            v.IdPoll = s2;
             v.Choices.Add(c[0]);
             v.Choices.Add(c[2]);
-            await _voteRepo.AddVoteAsync(v);
+            await _voteRepo.AddVoteAsync(v.Choices, id2, s2);
 
             v.Choices.RemoveAt(2);
             v.Choices.RemoveAt(1);
-            v.IdUser = id1;
-            await _voteRepo.AddVoteAsync(v);
+            await _voteRepo.AddVoteAsync(v.Choices, id1, s2);
 
-            v.IdPoll = s3;
-            await _voteRepo.AddVoteAsync(v);
+            await _voteRepo.AddVoteAsync(v.Choices, id1, s3);
 
-            v.IdUser = id2;
             v.Choices.Add(c[1]);
             v.Choices.Add(c[2]);
-            await _voteRepo.AddVoteAsync(v);
+            await _voteRepo.AddVoteAsync(v.Choices, id2, s3);
 
-            v.IdUser = id3;
             v.Choices.Add(c[0]);
-            await _voteRepo.AddVoteAsync(v);
+            await _voteRepo.AddVoteAsync(v.Choices, id3, s3);
         }
 
         private async Task testUser()
@@ -168,8 +157,8 @@ namespace PolySondage.Services
         private async Task testPoll()
         {
             Poll p2 = await _pollRepo.GetPollByIdAsync(poll2);
-            if (p2.IdUser != user1 && p2.Choices[0].Details != "1")
-                Debug.WriteLine("recherche par id renvoie pas le bon poll, id = " + p2.IdPoll + " et id user : " + p2.IdUser);
+            if (p2.Creator.IdUser != user1 && p2.Choices[0].Details != "1")
+                Debug.WriteLine("recherche par id renvoie pas le bon poll, id = " + p2.IdPoll + " et id user : " + p2.Creator.IdUser);
 
             if (!await _pollRepo.IsPollActivateAsync(poll3))
                 Debug.WriteLine("le poll 3 doit être activé mais la fonction ne revoie pas cette information");
@@ -187,14 +176,12 @@ namespace PolySondage.Services
         private async Task testVote()
         {
             Poll p = await _pollRepo.GetPollByIdAsync(poll3);
-            Vote v = new Vote();
-            v.IdPoll = poll3;
-            v.IdUser = user3;
-            v.Choices.Add(p.Choices[2]);
-            v.Choices.Add(p.Choices[1]);
+            List<Choice> Choices = new List<Choice>();
+            Choices.Add(p.Choices[2]);
+            Choices.Add(p.Choices[1]);
 
             int nbvote1 = p.Choices[0].Vote;
-            await _voteRepo.ChangeVoteAsync(v);
+            await _voteRepo.ChangeVoteAsync(Choices,user3,poll3);
             Poll pchange = await _pollRepo.GetPollByIdAsync(poll3);
             if (!(nbvote1 == pchange.Choices[0].Vote + 1))
                 Debug.WriteLine("le vote n'a pas été changé");

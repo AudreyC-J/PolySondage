@@ -12,9 +12,9 @@ namespace PolySondage.Data.Models
         [Key]
         public int IdPoll { get; set; }
         [Required]
-        public int IdUser { get; set; }
         public User Creator { get; set; }
         [Required]
+        [StringLength(50)]
         public string Title { get; set; }
         [Required]
         public List<Choice> Choices { get; set; }

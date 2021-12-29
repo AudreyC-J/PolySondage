@@ -2,7 +2,7 @@
 
 namespace PolySondage.Data.Migrations
 {
-    public partial class First : Migration
+    public partial class changementId : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,24 +12,12 @@ namespace PolySondage.Data.Migrations
                 {
                     IdUser = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.IdUser);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Votes",
-                columns: table => new
-                {
-                    IdPoll = table.Column<int>(type: "int", nullable: false),
-                    IdUser = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Votes", x => new { x.IdPoll, x.IdUser });
                 });
 
             migrationBuilder.CreateTable(
@@ -38,9 +26,8 @@ namespace PolySondage.Data.Migrations
                 {
                     IdPoll = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdUser = table.Column<int>(type: "int", nullable: false),
-                    CreatorIdUser = table.Column<int>(type: "int", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatorIdUser = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Unique = table.Column<bool>(type: "bit", nullable: false),
                     Activate = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -52,6 +39,32 @@ namespace PolySondage.Data.Migrations
                         column: x => x.CreatorIdUser,
                         principalTable: "Users",
                         principalColumn: "IdUser",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Votes",
+                columns: table => new
+                {
+                    IdVote = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PollIdPoll = table.Column<int>(type: "int", nullable: true),
+                    UserIdUser = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Votes", x => x.IdVote);
+                    table.ForeignKey(
+                        name: "FK_Votes_Polls_PollIdPoll",
+                        column: x => x.PollIdPoll,
+                        principalTable: "Polls",
+                        principalColumn: "IdPoll",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Votes_Users_UserIdUser",
+                        column: x => x.UserIdUser,
+                        principalTable: "Users",
+                        principalColumn: "IdUser",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -61,12 +74,10 @@ namespace PolySondage.Data.Migrations
                 {
                     IdChoice = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdPoll = table.Column<int>(type: "int", nullable: false),
-                    Details = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PollIdPoll = table.Column<int>(type: "int", nullable: false),
+                    Details = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Vote = table.Column<int>(type: "int", nullable: false),
-                    PollIdPoll = table.Column<int>(type: "int", nullable: true),
-                    VoteIdPoll = table.Column<int>(type: "int", nullable: true),
-                    VoteIdUser = table.Column<int>(type: "int", nullable: true)
+                    VoteIdVote = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -76,12 +87,12 @@ namespace PolySondage.Data.Migrations
                         column: x => x.PollIdPoll,
                         principalTable: "Polls",
                         principalColumn: "IdPoll",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Choices_Votes_VoteIdPoll_VoteIdUser",
-                        columns: x => new { x.VoteIdPoll, x.VoteIdUser },
+                        name: "FK_Choices_Votes_VoteIdVote",
+                        column: x => x.VoteIdVote,
                         principalTable: "Votes",
-                        principalColumns: new[] { "IdPoll", "IdUser" },
+                        principalColumn: "IdVote",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -91,9 +102,9 @@ namespace PolySondage.Data.Migrations
                 column: "PollIdPoll");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Choices_VoteIdPoll_VoteIdUser",
+                name: "IX_Choices_VoteIdVote",
                 table: "Choices",
-                columns: new[] { "VoteIdPoll", "VoteIdUser" });
+                column: "VoteIdVote");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Polls_CreatorIdUser",
@@ -105,6 +116,16 @@ namespace PolySondage.Data.Migrations
                 table: "Users",
                 column: "Email",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_PollIdPoll",
+                table: "Votes",
+                column: "PollIdPoll");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_UserIdUser",
+                table: "Votes",
+                column: "UserIdUser");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -113,10 +134,10 @@ namespace PolySondage.Data.Migrations
                 name: "Choices");
 
             migrationBuilder.DropTable(
-                name: "Polls");
+                name: "Votes");
 
             migrationBuilder.DropTable(
-                name: "Votes");
+                name: "Polls");
 
             migrationBuilder.DropTable(
                 name: "Users");

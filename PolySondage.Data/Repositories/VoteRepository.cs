@@ -16,12 +16,17 @@ namespace PolySondage.Data.Repositories
             _dbcontext = db;
         }
 
-        public async Task AddVoteAsync(Vote vote)
+        public async Task AddVoteAsync(List<Choice> choice, int idUser, int idPoll)
         {
-            if (vote == null)
-                throw new ArgumentNullException(nameof(vote));
+            if (choice == null)
+                throw new ArgumentNullException(nameof(choice));
 
-            foreach (Choice c in vote.Choices)
+            Vote vote = new Vote();
+            vote.Choices = choice;
+            vote.User = await _dbcontext.Users.FirstOrDefaultAsync(u => u.IdUser == idUser);
+            vote.Poll = await _dbcontext.Polls.FirstOrDefaultAsync(u => u.IdPoll == idPoll);
+
+            foreach (Choice c in choice)
             {
                 c.Vote += 1;
                 _dbcontext.Update(c);
@@ -31,9 +36,9 @@ namespace PolySondage.Data.Repositories
             await _dbcontext.SaveChangesAsync();
         }
 
-        public async Task ChangeVoteAsync(Vote vote)
+        public async Task ChangeVoteAsync(List<Choice> choice, int idUser, int idPoll)
         {
-            Vote v = await _dbcontext.Votes.FirstOrDefaultAsync(v => v.IdPoll == vote.IdPoll && v.IdUser == vote.IdUser);
+            Vote v = await _dbcontext.Votes.FirstOrDefaultAsync(v => v.Poll.IdPoll == idPoll && v.User.IdUser == idUser);
             if (v == default(Vote))
                 throw new ArgumentException(nameof(v));
 
@@ -43,13 +48,13 @@ namespace PolySondage.Data.Repositories
                 _dbcontext.Update(c);
             }
 
-            foreach (Choice c in vote.Choices)
+            foreach (Choice c in choice)
             {
                 c.Vote += 1;
                 _dbcontext.Update(c);
             }
 
-            v.Choices = vote.Choices;
+            v.Choices = choice;
             _dbcontext.Update(v);
 
             await _dbcontext.SaveChangesAsync();
@@ -57,11 +62,11 @@ namespace PolySondage.Data.Repositories
 
         public async Task<List<Poll>> GetPaticipatedPollsByIdUserAsync(int idUser)
         {
-            List<Vote> vote = await _dbcontext.Votes.Include(v => v.IdUser == idUser).ToListAsync();
+            List<Vote> vote = await _dbcontext.Votes.Include(v => v.User.IdUser == idUser).ToListAsync();
             List<Poll> p = new List<Poll>();
             foreach (Vote v in vote)
             {
-                Poll tmp = await _dbcontext.Polls.FirstAsync(t => t.IdPoll == v.IdPoll);
+                Poll tmp = await _dbcontext.Polls.FirstAsync(t => t.IdPoll == v.Poll.IdPoll);
                 p.Add(tmp);
             }
             return p;

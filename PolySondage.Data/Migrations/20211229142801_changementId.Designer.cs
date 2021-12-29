@@ -10,8 +10,8 @@ using PolySondage.Data;
 namespace PolySondage.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211223145859_First")]
-    partial class First
+    [Migration("20211229142801_changementId")]
+    partial class changementId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,28 +30,23 @@ namespace PolySondage.Data.Migrations
 
                     b.Property<string>("Details")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("IdPoll")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PollIdPoll")
+                    b.Property<int>("PollIdPoll")
                         .HasColumnType("int");
 
                     b.Property<int>("Vote")
                         .HasColumnType("int");
 
-                    b.Property<int?>("VoteIdPoll")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("VoteIdUser")
+                    b.Property<int?>("VoteIdVote")
                         .HasColumnType("int");
 
                     b.HasKey("IdChoice");
 
                     b.HasIndex("PollIdPoll");
 
-                    b.HasIndex("VoteIdPoll", "VoteIdUser");
+                    b.HasIndex("VoteIdVote");
 
                     b.ToTable("Choices");
                 });
@@ -66,15 +61,13 @@ namespace PolySondage.Data.Migrations
                     b.Property<bool>("Activate")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("CreatorIdUser")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdUser")
+                    b.Property<int>("CreatorIdUser")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("Unique")
                         .HasColumnType("bit");
@@ -95,11 +88,13 @@ namespace PolySondage.Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("IdUser");
 
@@ -111,35 +106,65 @@ namespace PolySondage.Data.Migrations
 
             modelBuilder.Entity("PolySondage.Data.Models.Vote", b =>
                 {
-                    b.Property<int>("IdPoll")
+                    b.Property<int>("IdVote")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("PollIdPoll")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdUser")
+                    b.Property<int?>("UserIdUser")
                         .HasColumnType("int");
 
-                    b.HasKey("IdPoll", "IdUser");
+                    b.HasKey("IdVote");
+
+                    b.HasIndex("PollIdPoll");
+
+                    b.HasIndex("UserIdUser");
 
                     b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("PolySondage.Data.Models.Choice", b =>
                 {
-                    b.HasOne("PolySondage.Data.Models.Poll", null)
+                    b.HasOne("PolySondage.Data.Models.Poll", "Poll")
                         .WithMany("Choices")
-                        .HasForeignKey("PollIdPoll");
+                        .HasForeignKey("PollIdPoll")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PolySondage.Data.Models.Vote", null)
                         .WithMany("Choices")
-                        .HasForeignKey("VoteIdPoll", "VoteIdUser");
+                        .HasForeignKey("VoteIdVote");
+
+                    b.Navigation("Poll");
                 });
 
             modelBuilder.Entity("PolySondage.Data.Models.Poll", b =>
                 {
                     b.HasOne("PolySondage.Data.Models.User", "Creator")
                         .WithMany("Created")
-                        .HasForeignKey("CreatorIdUser");
+                        .HasForeignKey("CreatorIdUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Creator");
+                });
+
+            modelBuilder.Entity("PolySondage.Data.Models.Vote", b =>
+                {
+                    b.HasOne("PolySondage.Data.Models.Poll", "Poll")
+                        .WithMany()
+                        .HasForeignKey("PollIdPoll");
+
+                    b.HasOne("PolySondage.Data.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserIdUser");
+
+                    b.Navigation("Poll");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PolySondage.Data.Models.Poll", b =>
