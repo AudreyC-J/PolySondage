@@ -21,4 +21,8 @@
     <ProjectReference Include="..\PolySondage.Services\PolySondage.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Poll\" />
+  </ItemGroup>
+
 </Project>

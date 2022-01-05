@@ -39,5 +39,32 @@ namespace PolySondage.Controllers
             ModelState.AddModelError("Authentication", "connexion impossible");
             return View();
         }
+
+        public IActionResult Inscription()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Inscription(InscriptionViewModels model)
+        {
+            if (model.Mdp != model.MdpCheck) 
+            {
+                ModelState.AddModelError("Inscription", "Les mots de passes ne sont pas identique");
+                return View();
+            }
+
+            var result = await _service.InscriptionAsync(model);
+
+            if (result > 0)
+            {
+                return Redirect("/Poll/HomePage");
+            }
+
+            ModelState.AddModelError("Inscription", "inscription impossible");
+            return View();
+        }
+
+
     }
 }
