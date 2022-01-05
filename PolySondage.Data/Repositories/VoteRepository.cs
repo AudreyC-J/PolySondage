@@ -28,7 +28,7 @@ namespace PolySondage.Data.Repositories
 
             foreach (Choice c in choice)
             {
-                c.Vote += 1;
+                c.TotalVotes += 1;
                 _dbcontext.Update(c);
             }
 
@@ -44,13 +44,13 @@ namespace PolySondage.Data.Repositories
 
             foreach (Choice c in v.Choices) 
             {
-                c.Vote -= 1;
+                c.TotalVotes -= 1;
                 _dbcontext.Update(c);
             }
 
             foreach (Choice c in choice)
             {
-                c.Vote += 1;
+                c.TotalVotes += 1;
                 _dbcontext.Update(c);
             }
 

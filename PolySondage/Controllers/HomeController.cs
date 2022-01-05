@@ -27,10 +27,15 @@ namespace PolySondage.Controllers
             _voteRepo = voterepo;
         }
 
-        public IActionResult Index()
+       /* public async Task<IActionResult> Index()
         {
            TestDataBase tes = new TestDataBase(_pollRepo, _userRepo, _voteRepo);
-           tes.test();
+           await tes.test();
+           return View();
+        }*/
+
+        public IActionResult Index() 
+        {
             return View();
         }
 

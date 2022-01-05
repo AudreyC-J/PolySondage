@@ -16,11 +16,11 @@ namespace PolySondage.Data.Models
         [Required]
         [StringLength(50)]
         public string Details { get; set; }
-        public int Vote { get; set; }
+        public int TotalVotes { get; set; }
 
         public Choice()
         {
-            Vote = 0;
+            TotalVotes = 0;
         }
     }
 }

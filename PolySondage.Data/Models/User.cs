@@ -19,11 +19,11 @@ namespace PolySondage.Data.Models
         [Required]
         [StringLength(50)]
         public string Password { get; set; }
-        public List<Poll> Created { get; set; }
+        public List<Poll> PollsCreated { get; set; }
 
         public User() 
         {
-            Created = new List<Poll>();
+            PollsCreated = new List<Poll>();
         }
 
     }
