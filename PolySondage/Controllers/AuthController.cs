@@ -31,7 +31,7 @@ namespace PolySondage.Controllers
             {
                 //Si returnUrl non renseigné, retour vers page principal
                 if (string.IsNullOrEmpty(returnUrl))
-                    return Redirect("/home/index");
+                    return Redirect("/Poll/HomePage");
 
                 return Redirect(returnUrl);
             }
