@@ -32,14 +32,24 @@ namespace PolySondage
             services.AddScoped<Data.Repositories.IVoteRepository, VoteRepository>();
             services.AddScoped<Data.Repositories.IUserRepository, UserRepository>();
             services.AddScoped<Services.Interface.IAuthServices, AuthServices>();
-            services.AddControllersWithViews();
-
+            services.AddHttpContextAccessor();
             services.AddDbContext<Data.ApplicationDbContext>(options => {
                 options.UseSqlServer(cn);
 #if DEBUG
                 options.EnableSensitiveDataLogging(false);
 #endif
             });
+
+            services.AddAuthentication("Connected")
+                .AddCookie("Connected", config =>
+                {
+                    config.LoginPath = "/auth/connect";
+                    config.LogoutPath = "/auth/disconnect";
+                    config.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                    config.SlidingExpiration = true;
+                    config.Cookie.IsEssential = true;
+                });
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +69,8 @@ namespace PolySondage
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

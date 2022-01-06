@@ -21,21 +21,15 @@ namespace PolySondage.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Connect(AuthViewModels model, string returnUrl)
+        public async Task<IActionResult> Connect(AuthViewModels model)
         {
-            //appel service authentificarion
             var result = await _service.ConnectionAsync(model);
 
-            //Si ok renvoyer vers la page returnUrl
-            if (result > 0)
+            if (result)
             {
-                //Si returnUrl non renseigné, retour vers page principal
-                if (string.IsNullOrEmpty(returnUrl))
-                    return Redirect("/Poll/HomePage");
-
-                return Redirect(returnUrl);
+                 return Redirect("/Home/DashBoard");
             }
-            //Sinon retourner sur la page formulaire
+
             ModelState.AddModelError("Authentication", "connexion impossible");
             return View();
         }
@@ -56,9 +50,13 @@ namespace PolySondage.Controllers
 
             var result = await _service.InscriptionAsync(model);
 
-            if (result > 0)
+            if (result)
             {
-                return Redirect("/Poll/HomePage");
+                AuthViewModels connect = new AuthViewModels();
+                connect.mail = model.Email;
+                connect.mdp = model.Mdp;
+                var resultconnect = await _service.ConnectionAsync(connect);
+                return Redirect("/Home/DashBoard");
             }
 
             ModelState.AddModelError("Inscription", "inscription impossible");

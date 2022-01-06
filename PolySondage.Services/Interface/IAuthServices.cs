@@ -9,7 +9,8 @@ namespace PolySondage.Services.Interface
 {
     public interface IAuthServices
     {
-       Task<int> ConnectionAsync(AuthViewModels info);
-       Task<int> InscriptionAsync(InscriptionViewModels info);
+       Task<bool> ConnectionAsync(AuthViewModels info);
+       Task<bool> InscriptionAsync(InscriptionViewModels info);
+       Task LogoutAysnc();
     }
 }

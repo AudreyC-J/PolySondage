@@ -1,12 +1,17 @@
-﻿using PolySondage.Data.Models;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using PolySondage.Data.Models;
 using PolySondage.Data.Repositories;
 using PolySondage.Services.Interface;
 using PolySondage.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PolySondage.Services
@@ -14,25 +19,49 @@ namespace PolySondage.Services
     public class AuthServices : IAuthServices
     {
         private readonly IUserRepository _userRepo;
-        public AuthServices(IUserRepository userrepo)
+        private readonly HttpContext _HttpContext;
+        public AuthServices(IUserRepository userrepo, IHttpContextAccessor contextAccessor)
         {
             _userRepo = userrepo;
+            _HttpContext = contextAccessor.HttpContext;
         }
 
-        public async Task<int> ConnectionAsync(AuthViewModels info)
+        public async Task<bool> ConnectionAsync(AuthViewModels info)
         {
             int result = await _userRepo.connectUserAsync(info.mail, HashMdp(info.mdp));
-            return result;
+            if (result > 0) 
+            {  
+                var claims = new List<Claim>() {
+                    new Claim(ClaimTypes.Email, info.mail),
+                    new Claim(ClaimTypes.Sid, Convert.ToString(result) ),
+                    new Claim(ClaimTypes.Role, "Connected")
+                };
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+                await _HttpContext.SignInAsync(
+                    "Connected",
+                    principal
+                    );
+                return true;
+            }
+            return false;
         }
 
-        public async Task<int> InscriptionAsync(InscriptionViewModels info)
+        public async Task<bool> InscriptionAsync(InscriptionViewModels info)
         {
             User u = new User();
             u.Email = info.Email;
             u.Password = HashMdp(info.Mdp);
 
-            int id = await _userRepo.AddUserAsync(u);
-            return id;
+            int result=await _userRepo.AddUserAsync(u);
+            if (result > 0)
+                return true;
+            else return false;
+        }
+
+        public async Task LogoutAysnc()
+        {
+            await _HttpContext.SignOutAsync();
         }
 
         private static string HashMdp(string mdp)
