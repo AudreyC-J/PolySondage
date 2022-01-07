@@ -14,9 +14,9 @@ namespace PolySondage.Services.Interface
 
         Task<List<DashBoardViewModels>> GetPollParticipatedAsync(int idUser);
 
-        Task<bool> CreatedPollAsync(Poll p);
+        Task<int> CreatedPollAsync(Poll p, int idUser);
 
-        Task<bool> VotePollAsync(Vote v);
+        Task AddVotePollAsync(List<Choice> c, int idUser, int idPoll);
 
         Task<ResultPollViewModels> GetResultPollAsync(int idPoll);
     }

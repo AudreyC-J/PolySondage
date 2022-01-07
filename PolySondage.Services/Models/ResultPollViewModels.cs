@@ -10,7 +10,11 @@ namespace PolySondage.Services.Models
     public class ResultPollViewModels
     {
         public List<Choice> OptionsOrdered { get; set; }
-        public List<int> VotesOptionsOrdered { get; set; }
         public string Title { get; set; }
+
+        public ResultPollViewModels()
+        {
+            OptionsOrdered = new List<Choice>();
+        }
     }
 }

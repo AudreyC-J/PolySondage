@@ -1,4 +1,5 @@
 ﻿using PolySondage.Data.Models;
+using PolySondage.Data.Repositories;
 using PolySondage.Services.Interface;
 using PolySondage.Services.Models;
 using System;
@@ -11,29 +12,62 @@ namespace PolySondage.Services
 {
     public class PollServices : IPollServices
     {
-        public async Task<bool> CreatedPollAsync(Poll p)
+        private readonly IPollRepository _pollRepo;
+        private readonly IVoteRepository _voteRepo;
+
+        public PollServices(IPollRepository pollrepo, IVoteRepository voterepo)
         {
-            throw new NotImplementedException();
+            _pollRepo = pollrepo;
+            _voteRepo = voterepo;
         }
+        public async Task<int> CreatedPollAsync(Poll p, int idUser)
+            => await _pollRepo.AddPollAsync(p, idUser);
 
         public async Task<List<DashBoardViewModels>> GetPollCreatedAsync(int idUser)
         {
-            throw new NotImplementedException();
+            List<Poll> pollcreated = await _pollRepo.GetPollCreatorAsync(idUser);
+            List<DashBoardViewModels> result = new List<DashBoardViewModels>();
+            foreach (Poll p in pollcreated) 
+            {
+                DashBoardViewModels tmp = new DashBoardViewModels();
+                tmp.IdPoll = p.IdPoll;
+                tmp.Title = p.Title;
+                tmp.NumberVote = p.NumberTotalVote;
+                tmp.Activated = p.Activate;
+
+                result.Add(tmp);
+            }
+            return result;
         }
 
         public async Task<List<DashBoardViewModels>> GetPollParticipatedAsync(int idUser)
         {
-            throw new NotImplementedException();
+            List<Poll> pollcreated = await _voteRepo.GetPaticipatedPollsByIdUserAsync(idUser);
+            List<DashBoardViewModels> result = new List<DashBoardViewModels>();
+            foreach (Poll p in pollcreated)
+            {
+                DashBoardViewModels tmp = new DashBoardViewModels();
+                tmp.IdPoll = p.IdPoll;
+                tmp.Title = p.Title;
+                tmp.NumberVote = p.NumberTotalVote;
+                tmp.Activated = p.Activate;
+
+                result.Add(tmp);
+            }
+            return result;
         }
 
         public async Task<ResultPollViewModels> GetResultPollAsync(int idPoll)
         {
-            throw new NotImplementedException();
+            ResultPollViewModels result = new ResultPollViewModels();
+            Poll poll = await _pollRepo.GetPollByIdAsync(idPoll);
+            result.Title = poll.Title;
+            result.OptionsOrdered= poll.Choices.OrderByDescending(o => o.TotalVotes).ToList();
+
+            return result;
         }
 
-        public async Task<bool> VotePollAsync(Vote v)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task AddVotePollAsync(List<Choice> c, int idUser, int idPoll)
+            => await _voteRepo.AddVoteAsync(c, idUser, idPoll);
     }
 }
