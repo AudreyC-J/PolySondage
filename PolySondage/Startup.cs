@@ -31,7 +31,8 @@ namespace PolySondage
             services.AddScoped<Data.Repositories.IPollRepository, PollRepository>();
             services.AddScoped<Data.Repositories.IVoteRepository, VoteRepository>();
             services.AddScoped<Data.Repositories.IUserRepository, UserRepository>();
-            services.AddScoped<Services.Interface.IAuthServices, AuthServices>();
+            services.AddScoped<Services.Interface.IAuthServices, AuthServices>(); 
+            services.AddScoped<Services.Interface.IPollServices, PollServices>();
             services.AddHttpContextAccessor();
             services.AddDbContext<Data.ApplicationDbContext>(options => {
                 options.UseSqlServer(cn);

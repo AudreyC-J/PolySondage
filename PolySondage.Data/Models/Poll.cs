@@ -23,10 +23,13 @@ namespace PolySondage.Data.Models
         [Required]
         public bool Activate { get; set; } // false: off ,true : on
 
+        public int NumberTotalVote { get; set; }
+
         public Poll() 
         {
             Activate = true;
             Choices = new List<Choice>();
+            NumberTotalVote = 0;
         }
     }
 }

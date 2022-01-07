@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using PolySondage.Data.Repositories;
 using PolySondage.Models;
 using PolySondage.Services;
+using PolySondage.Services.Interface;
 using PolySondage.Services.Models;
 using System;
 using System.Collections.Generic;
@@ -21,13 +22,13 @@ namespace PolySondage.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly HttpContext _HttpContext;
+        private readonly IPollServices _pollServices;
 
-
-        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor contextAccessor)
+        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor contextAccessor, IPollServices pollServ)
         {
             _logger = logger;
             _HttpContext = contextAccessor.HttpContext;
-
+            _pollServices = pollServ;
         }
         public IActionResult Index() 
         {
@@ -35,14 +36,19 @@ namespace PolySondage.Controllers
         }
 
         [Authorize(Roles = "Connected")]
-        public IActionResult DashBoard() 
+        public async Task<IActionResult> DashBoard() 
         {
-            var email= _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-            var id = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
-            Debug.WriteLine("Email = " + email + " dont l'id est : " + id);
-
-
+            var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
+            int id = Int32.Parse(idString);
             List<DashBoardViewModels> data = new List<DashBoardViewModels>();
+            var created = await _pollServices.GetPollCreatedAsync(id);
+            var participated = await _pollServices.GetPollParticipatedAsync(id);
+            DashBoardViewModels separation = new DashBoardViewModels();
+            separation.NumberVote = -1;
+
+            data.AddRange(created);
+            data.Add(separation);
+            data.AddRange(participated);
 
             return View(data);
         }

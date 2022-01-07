@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 
 namespace PolySondage.Services.Models
 {
-    public class DashBoardViewModels
+    public class ResultPollViewModels
     {
-        public int IdPoll { get; set; }
+        public List<Choice> OptionsOrdered { get; set; }
+        public List<int> VotesOptionsOrdered { get; set; }
         public string Title { get; set; }
-        public int NumberVote { get; set; }
-        public bool Activated { get; set; }
-
     }
 }

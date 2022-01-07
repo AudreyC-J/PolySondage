@@ -24,7 +24,9 @@ namespace PolySondage.Data.Repositories
             Vote vote = new Vote();
             vote.Choices = choice;
             vote.User = await _dbcontext.Users.FirstOrDefaultAsync(u => u.IdUser == idUser);
-            vote.Poll = await _dbcontext.Polls.FirstOrDefaultAsync(u => u.IdPoll == idPoll);
+            Poll p = await _dbcontext.Polls.FirstOrDefaultAsync(u => u.IdPoll == idPoll);
+            p.NumberTotalVote += 1;
+            vote.Poll = p;
 
             foreach (Choice c in choice)
             {

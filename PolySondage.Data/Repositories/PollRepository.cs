@@ -70,8 +70,7 @@ namespace PolySondage.Data.Repositories
         public async Task<int> GetNumberUserVotePollAsync(int idPoll)
         {
             Poll poll = await _dbcontext.Polls.FirstOrDefaultAsync(p => p.IdPoll == idPoll);
-            List<Vote> v = await _dbcontext.Votes.Include(p => p.Poll == poll).ToListAsync();
-            return v.Count();
+            return poll.NumberTotalVote;
         }
     }
 }
