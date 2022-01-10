@@ -12,5 +12,6 @@ namespace PolySondage.Data.Repositories
         Task AddVoteAsync(List<Choice> choice, int idUser, int idPoll);
         Task ChangeVoteAsync(List<Choice> choice, int idUser, int idPoll);
         Task<List<Poll>> GetPaticipatedPollsByIdUserAsync(int idUser);
+        Task<List<Choice>> GetUserChoicesPollAsync(int idUser, int idPoll);
     }
 }

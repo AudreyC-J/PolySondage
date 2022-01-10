@@ -73,5 +73,11 @@ namespace PolySondage.Data.Repositories
             }
             return p;
         }
+
+        public async Task<List<Choice>> GetUserChoicesPollAsync(int idUser, int idPoll)
+        {
+            Vote v = await _dbcontext.Votes.FirstOrDefaultAsync(v => v.Poll.IdPoll == idPoll && v.User.IdUser == idUser);
+            return v.Choices;
+        }
     }
 }

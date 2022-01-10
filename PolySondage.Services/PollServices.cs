@@ -69,5 +69,14 @@ namespace PolySondage.Services
 
         public async Task AddVotePollAsync(List<Choice> c, int idUser, int idPoll)
             => await _voteRepo.AddVoteAsync(c, idUser, idPoll);
+
+        public async Task<Poll> GetPollAsync(int idPoll)
+            => await _pollRepo.GetPollByIdAsync(idPoll);
+
+        public async Task UpdateVotePollAsync(List<Choice> c, int idUser, int idPoll)
+            => await _voteRepo.ChangeVoteAsync(c, idUser, idPoll);
+
+        public async Task<List<Choice>> GetChoicesUserPollAsync(int idPoll, int idUser)
+             => await _voteRepo.GetUserChoicesPollAsync(idUser, idPoll);
     }
 }
