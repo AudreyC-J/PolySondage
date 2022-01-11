@@ -4,6 +4,7 @@ using PolySondage.Data.Models;
 using PolySondage.Services.Interface;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,6 +30,8 @@ namespace PolySondage.Controllers
         [HttpPost]
         public IActionResult Create(Poll p)
         {
+            Debug.WriteLine(p.Choices.Count);
+            p.Choices.ForEach(c => Debug.WriteLine(c.Details));
             return View();
         }
     }
