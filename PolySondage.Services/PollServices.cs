@@ -23,13 +23,13 @@ namespace PolySondage.Services
         public async Task<int> CreatedPollAsync(Poll p, int idUser)
             => await _pollRepo.AddPollAsync(p, idUser);
 
-        public async Task<List<DashBoardViewModels>> GetPollCreatedAsync(int idUser)
+        public async Task<List<InformationDashBoardViewModels>> GetPollCreatedAsync(int idUser)
         {
             List<Poll> pollcreated = await _pollRepo.GetPollCreatorAsync(idUser);
-            List<DashBoardViewModels> result = new List<DashBoardViewModels>();
+            List<InformationDashBoardViewModels> result = new List<InformationDashBoardViewModels>();
             foreach (Poll p in pollcreated) 
             {
-                DashBoardViewModels tmp = new DashBoardViewModels();
+                InformationDashBoardViewModels tmp = new InformationDashBoardViewModels();
                 tmp.IdPoll = p.IdPoll;
                 tmp.Title = p.Title;
                 tmp.NumberVote = p.NumberTotalVote;
@@ -40,13 +40,13 @@ namespace PolySondage.Services
             return result;
         }
 
-        public async Task<List<DashBoardViewModels>> GetPollParticipatedAsync(int idUser)
+        public async Task<List<InformationDashBoardViewModels>> GetPollParticipatedAsync(int idUser)
         {
             List<Poll> pollcreated = await _voteRepo.GetPaticipatedPollsByIdUserAsync(idUser);
-            List<DashBoardViewModels> result = new List<DashBoardViewModels>();
+            List<InformationDashBoardViewModels> result = new List<InformationDashBoardViewModels>();
             foreach (Poll p in pollcreated)
             {
-                DashBoardViewModels tmp = new DashBoardViewModels();
+                InformationDashBoardViewModels tmp = new InformationDashBoardViewModels();
                 tmp.IdPoll = p.IdPoll;
                 tmp.Title = p.Title;
                 tmp.NumberVote = p.NumberTotalVote;

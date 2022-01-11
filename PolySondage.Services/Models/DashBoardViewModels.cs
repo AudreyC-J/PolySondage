@@ -1,5 +1,4 @@
-﻿using PolySondage.Data.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +8,14 @@ namespace PolySondage.Services.Models
 {
     public class DashBoardViewModels
     {
-        public int IdPoll { get; set; }
-        public string Title { get; set; }
-        public int NumberVote { get; set; }
-        public bool Activated { get; set; }
+        public List<InformationDashBoardViewModels> created { get; set; }
 
+        public List<InformationDashBoardViewModels> participated { get; set; }
+
+        public DashBoardViewModels() 
+        {
+            created = new List<InformationDashBoardViewModels>();
+            participated = new List<InformationDashBoardViewModels>();
+        }
     }
 }

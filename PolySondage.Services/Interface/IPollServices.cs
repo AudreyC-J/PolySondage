@@ -10,9 +10,9 @@ namespace PolySondage.Services.Interface
 {
     public interface IPollServices
     {
-        Task<List<DashBoardViewModels>> GetPollCreatedAsync(int idUser);
+        Task<List<InformationDashBoardViewModels>> GetPollCreatedAsync(int idUser);
 
-        Task<List<DashBoardViewModels>> GetPollParticipatedAsync(int idUser);
+        Task<List<InformationDashBoardViewModels>> GetPollParticipatedAsync(int idUser);
 
         Task<int> CreatedPollAsync(Poll p, int idUser);
 

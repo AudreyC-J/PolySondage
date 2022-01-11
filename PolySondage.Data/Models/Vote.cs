@@ -15,5 +15,10 @@ namespace PolySondage.Data.Models
         public User User { get; set; }
         [Required]
         public List<Choice> Choices { get; set; }
+
+        public Vote() 
+        {
+            Choices = new List<Choice>();
+        }
     }
 }

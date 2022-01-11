@@ -40,15 +40,14 @@ namespace PolySondage.Controllers
         {
             var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
             int id = Int32.Parse(idString);
-            List<DashBoardViewModels> data = new List<DashBoardViewModels>();
+            List<InformationDashBoardViewModels> info = new List<InformationDashBoardViewModels>();
             var created = await _pollServices.GetPollCreatedAsync(id);
             var participated = await _pollServices.GetPollParticipatedAsync(id);
-            DashBoardViewModels separation = new DashBoardViewModels();
-            separation.NumberVote = -1;
 
-            data.AddRange(created);
-            data.Add(separation);
-            data.AddRange(participated);
+
+            DashBoardViewModels data = new DashBoardViewModels();
+            data.created.AddRange(created);
+            data.participated.AddRange(participated);
 
             return View(data);
         }
