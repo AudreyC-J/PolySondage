@@ -27,12 +27,15 @@ namespace PolySondage.Controllers
             return View();
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id, int toto, int yeah, bool wat) { }
+
         [HttpPost]
         public IActionResult Create(Poll p)
         {
             Debug.WriteLine(p.Choices.Count);
             p.Choices.ForEach(c => Debug.WriteLine(c.Details));
-            return View();
+            return Ok(42);
         }
     }
 }

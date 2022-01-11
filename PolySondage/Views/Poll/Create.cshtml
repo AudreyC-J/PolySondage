@@ -9,33 +9,45 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-		<form asp-action="Create">
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			<div class="form-group">
-				<input asp-for="Title" class="form-control" />
-				<span asp-validation-for="Title" class="text-danger"></span>
-			</div>
-			<div class="form-group form-check">
-				<label class="form-check-label">
-					<input class="form-check-input" asp-for="Unique" /> 
-				</label>
-			</div>
-			<div class="form-group">
-				<input asp-for="Choices" class="form-control" />
-				<span asp-validation-for="Choices" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<input asp-for="Choices" class="form-control" />
-				<span asp-validation-for="Choices" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<input asp-for="Choices" class="form-control" />
-				<span asp-validation-for="Choices" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<input type="submit" value="Create" class="btn btn-primary" />
-			</div>
-		</form>
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Unique" />
+                </label>
+            </div>
+            <div class="form-group">
+                <input class="form-control choices" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input class="form-control choices" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input class="form-control choices" />
+                <span class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <input asp-for="Choices" class="form-control choices" />
+            <span asp-validation-for="Choices" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="Choices" class="form-control" />
+            <span asp-validation-for="Choices" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="Choices" class="form-control" />
+            <span asp-validation-for="Choices" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
 
@@ -45,4 +57,47 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	<script>
+    //js et ajax pour
+	//gestion des ajouts de champs dynamique
+    //envoi du From au controleur
+        $(document).ready(() => {
+
+            $('.choices:last').change(e => {
+                //ajout champ dynamiquement
+
+                //faire un bind de ce callback sur le input créé
+            })
+
+
+
+            $('form').submit(e => {
+                e.preventDefault();
+                //construire l'objet data equivalent à la classe Poll
+                var data = new FormData();
+                data.append('title', $('#title').val());
+                var choices = $('input.choices').map(i => i.val());
+                data.append('choices', choices);
+                //...
+
+                $.ajax({
+                    data: data,
+                    url: '/poll/create',
+                    method: 'post',
+                    contentType: 'application/json',
+                    success: response => {
+                        //action en cas de réussite
+                        window.location.href = '/index?poll=' + response;
+                    },
+                    error: error => {
+                        //action en cas d'erreur (message ?)
+                    }    
+                })
+                'poll/detail/5'
+                'poll/detail?test=5&toto=5&yeah=0&wat=true'
+
+            })
+        });
+	</script>
+
 }
