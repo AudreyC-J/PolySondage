@@ -1,4 +1,4 @@
-﻿@model PolySondage.Data.Models.Poll
+﻿@model PolySondage.Services.Models.CreateViewModels
 
 @{
     ViewData["Title"] = "Create";
@@ -39,10 +39,6 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 	<script>
@@ -62,7 +58,7 @@
                     //faire un bind de ce callback sur le input créé
                     addInput();
                 })
-            }
+            };
             
 
 
@@ -78,20 +74,13 @@
                 });
                 data.append('choices', choices);
                 data.append('unique', $('#unique').is(':checked'));
-                //...
 
                 $.ajax({
                     type: 'POST',
-                    data: JSON.stringify({
-                        title: $("#title").val(),
-                        choices: choices,
-                        unique: $('#unique').is(':checked')
-                    }),
-                    url: '/poll/create',
+                    url: 'Create',
+                    data: data,
                     method: 'post',
-                    processData: false,
-                    contentType: 'application/json',
-                    dataType: 'json',
+                    contentType: false,
                     success: response => {
                         //action en cas de réussite
                         //window.location.href = '/index?poll=' + response;
@@ -99,8 +88,9 @@
                     },
                     error: error => {
                         //action en cas d'erreur (message ?)
-                    }    
-                })
+                    },
+                    processData: false,
+                });
 
             })
         });

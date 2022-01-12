@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PolySondage.Data.Models;
 using PolySondage.Services.Interface;
+using PolySondage.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,12 +29,8 @@ namespace PolySondage.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Poll p)
+        public IActionResult Create(CreateViewModels p)
         {
-            Debug.WriteLine(p);
-            Debug.WriteLine(p.Title);
-            Debug.WriteLine(p.Choices.Count());
-            p.Choices.ForEach(c => Debug.WriteLine(c.Details));
             return Ok(42);
         }
     }
