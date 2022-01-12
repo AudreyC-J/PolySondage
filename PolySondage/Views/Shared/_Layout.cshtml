@@ -31,11 +31,10 @@
                             <i class="large material-icons" style="font-size:2rem">account_circle</i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            <button class="dropdown-item" type="button">DashBoard</button>
-                            <button class="dropdown-item" type="button" asp-controller="Auth" asp-action="LogOut">Deconnexion <i class="large material-icons" style="font-size:medium">exit_to_app</i></button>
+                            <a class="dropdown-item" type="button" asp-controller="Home" asp-action="DashBoard">DashBoard</a>
+                            <a class="dropdown-item" type="button" asp-controller="Auth" asp-action="LogOut">Deconnexion <i class="large material-icons" style="font-size:medium">exit_to_app</i></a>
                         </div>
                     </div>
-                    
                 </form>
             </div>
         </nav>

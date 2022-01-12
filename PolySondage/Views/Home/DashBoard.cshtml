@@ -5,11 +5,11 @@
 }
 
 <h1>DashBord</h1>
-<div style="display: flex; flex-direction: row; flex: 50%; ">
-    <div width=50%>
-        <div style="display: flex">
-            <h2>Mes sondage</h2>
-            <button  asp-controller="Poll" asp-action="Create" type="button" class="btn btn-success">Créer</button>
+<div style="margin-top:2rem" class="container row">
+    <div class="col-6">
+        <div class="container row border-bottom" style="padding-bottom:1rem">
+            <h2 class="col-md-8">Mes sondage</h2>
+            <a asp-controller="Poll" asp-action="Create" class="btn btn-success col-6 col-md-4">Créer</a>
         </div>
 
         <table class="table table-sm">
@@ -18,7 +18,7 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Title)
+                            <a asp-controller="Poll" asp-action="Resultat" class="btn btn-link">@Html.DisplayFor(modelItem => item.Title)</a>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.NumberVote)
@@ -38,15 +38,15 @@
             </tbody>
         </table>
     </div>
-    <div width=50% style="flex: 50%">
-        <h2>Mes votes</h2>
+    <div class="col-6">
+        <h2 style="width: 100%; padding-bottom: 1.5rem; padding-left:1rem" class="border-bottom">Mes votes</h2>
         <table class="table table-sm">
             <tbody>
                 @foreach (var item in Model.participated)
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Title)
+                            <a asp-controller="Poll" asp-action="Resultat" class="btn btn-link">@Html.DisplayFor(modelItem => item.Title)</a>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.NumberVote)

@@ -37,7 +37,7 @@ namespace PolySondage.Controllers
         public async Task<IActionResult> LogOut() 
         {
             await _service.LogoutAysnc();
-            return Redirect("Auth/Connect");
+            return Redirect("Connect");
         }
 
         public IActionResult Inscription()
