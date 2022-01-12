@@ -4,6 +4,7 @@ using PolySondage.Services.Interface;
 using PolySondage.Services.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace PolySondage.Services
         public async Task<List<InformationDashBoardViewModels>> GetPollCreatedAsync(int idUser)
         {
             List<Poll> pollcreated = await _pollRepo.GetPollCreatorAsync(idUser);
+            Debug.WriteLine(pollcreated.Count);
             List<InformationDashBoardViewModels> result = new List<InformationDashBoardViewModels>();
             foreach (Poll p in pollcreated) 
             {
@@ -42,9 +44,10 @@ namespace PolySondage.Services
 
         public async Task<List<InformationDashBoardViewModels>> GetPollParticipatedAsync(int idUser)
         {
-            List<Poll> pollcreated = await _voteRepo.GetPaticipatedPollsByIdUserAsync(idUser);
+            List<Poll> pollparticipated = await _voteRepo.GetPaticipatedPollsByIdUserAsync(idUser);
+            Debug.WriteLine(pollparticipated.Count);
             List<InformationDashBoardViewModels> result = new List<InformationDashBoardViewModels>();
-            foreach (Poll p in pollcreated)
+            foreach (Poll p in pollparticipated)
             {
                 InformationDashBoardViewModels tmp = new InformationDashBoardViewModels();
                 tmp.IdPoll = p.IdPoll;
@@ -61,8 +64,9 @@ namespace PolySondage.Services
         {
             ResultPollViewModels result = new ResultPollViewModels();
             Poll poll = await _pollRepo.GetPollByIdAsync(idPoll);
+            List<Choice> choicesPoll = await _pollRepo.GetChoicesPollByIdAsync(idPoll);
             result.Title = poll.Title;
-            result.OptionsOrdered= poll.Choices.OrderByDescending(o => o.TotalVotes).ToList();
+            result.OptionsOrdered= choicesPoll.OrderByDescending(o => o.TotalVotes).ToList();
 
             return result;
         }
@@ -71,7 +75,12 @@ namespace PolySondage.Services
             => await _voteRepo.AddVoteAsync(c, idUser, idPoll);
 
         public async Task<Poll> GetPollAsync(int idPoll)
-            => await _pollRepo.GetPollByIdAsync(idPoll);
+        {
+            Poll p = await _pollRepo.GetPollByIdAsync(idPoll);
+            List<Choice> choicesPoll = await _pollRepo.GetChoicesPollByIdAsync(idPoll);
+            p.Choices = choicesPoll;
+            return p;
+        }
 
         public async Task UpdateVotePollAsync(List<Choice> c, int idUser, int idPoll)
             => await _voteRepo.ChangeVoteAsync(c, idUser, idPoll);
