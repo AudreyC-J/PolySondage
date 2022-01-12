@@ -22,7 +22,7 @@ namespace PolySondage.Controllers
         public IActionResult Connect()
         {
             var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
-            if (idString == "0")
+            if (idString is null)
                 return View();
             else
                 return Redirect("/Home/DashBoard");

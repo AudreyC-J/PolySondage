@@ -74,7 +74,7 @@ namespace PolySondage.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Connected")]
+        [Authorize]
         public async Task<IActionResult> Vote(PageVoteViewModels v)
         {
             var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
@@ -87,7 +87,7 @@ namespace PolySondage.Controllers
             return Redirect("Resultat/" + v.IdPoll);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> Resultat(int id) 
         {
            ResultPollViewModels r = await _pollServices.GetResultPollAsync(id);
