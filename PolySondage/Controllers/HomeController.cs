@@ -35,7 +35,7 @@ namespace PolySondage.Controllers
             return Redirect("/Auth/Connect");
         }
 
-        [Authorize(Roles = "Connected")]
+        [Authorize]
         public async Task<IActionResult> DashBoard() 
         {
             var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
@@ -43,7 +43,6 @@ namespace PolySondage.Controllers
             List<InformationDashBoardViewModels> info = new List<InformationDashBoardViewModels>();
             var created = await _pollServices.GetPollCreatedAsync(id);
             var participated = await _pollServices.GetPollParticipatedAsync(id);
-
 
             DashBoardViewModels data = new DashBoardViewModels();
             data.created.AddRange(created);

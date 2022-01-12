@@ -51,19 +51,20 @@ namespace PolySondage.Data.Repositories
 
         public async Task<List<Poll>> GetPollCreatorAsync(int idCreator)
         {
-            List<Vote> vote = await _dbcontext.Votes.Include(v => v.User).ToListAsync();
-            List<Vote> list = vote.Where(u => u.User.IdUser == idCreator).ToList();
-            List<Poll> p = new List<Poll>();
-            foreach (Vote v in list)
-            {
-                Poll tmp = await _dbcontext.Polls.FirstAsync(t => t.IdPoll == v.Poll.IdPoll);
-                p.Add(tmp);
-            }
-            return p;
+            List<Poll> vote = await _dbcontext.Polls.Include(v => v.Creator).ToListAsync();
+            List<Poll> list = vote.Where(u => u.Creator.IdUser == idCreator).ToList();
+            return list;
         }
 
-        public Task<Poll> GetPollByIdAsync(int idPoll)
-            => _dbcontext.Polls.FirstOrDefaultAsync(p => p.IdPoll == idPoll);
+        public async Task<Poll> GetPollByIdAsync(int idPoll)
+            => await _dbcontext.Polls.FirstOrDefaultAsync(p => p.IdPoll == idPoll);
+
+        public async Task<List<Choice>> GetChoicesPollByIdAsync(int idPoll) 
+        {
+            var list = await _dbcontext.Choices.Include(p => p.Poll).ToArrayAsync();
+            return list.Where(p => p.Poll.IdPoll == idPoll).ToList();
+        }
+            
 
         public async Task<bool> IsPollActivateAsync(int idPoll)
         {

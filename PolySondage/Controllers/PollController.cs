@@ -52,7 +52,6 @@ namespace PolySondage.Controllers
         [HttpGet]
         public async Task<IActionResult> Vote(int id) 
         {
-            Debug.WriteLine("Je suis passé par là");
             Poll p = await _pollServices.GetPollAsync(id);
             if (!p.Activate)
                 return Redirect("Resultat/" + id);

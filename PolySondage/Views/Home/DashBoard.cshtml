@@ -1,5 +1,6 @@
 ﻿@model PolySondage.Services.Models.DashBoardViewModels
 
+
 @{
     ViewData["Title"] = "DashBoard";
 }
@@ -18,7 +19,7 @@
                 {
                     <tr>
                         <td>
-                            <a asp-controller="Poll" asp-action="Resultat" class="btn btn-link">@Html.DisplayFor(modelItem => item.Title)</a>
+                            <a asp-controller="Poll" asp-action="Resultat/@item.IdPoll"  class="btn btn-link">@Html.DisplayFor(modelItem => item.Title)</a>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.NumberVote)
