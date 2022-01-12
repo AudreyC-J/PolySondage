@@ -4,11 +4,10 @@
     ViewData["Title"] = "Resultat";
 }
 
-<h1>Resultat</h1>
 <div class="row">
     <div class="col-8">
         <dl class="row">
-            <dt class="col-sm-2">
+            <dt>
                 @Html.DisplayFor(model => model.Title)
             </dt>
         </dl>
@@ -34,7 +33,8 @@
 </div>
 
 <div>
-    @Html.ActionLink("Vote", "Edit Vote", new { /* id = Model.PrimaryKey */ }) |
+    <a href="/Poll/Vote/@Html.DisplayFor(model => model.idPoll)" >Edit Vote</a>
+    <p>|</p>
     <a asp-controller="Home" asp-action="DashBoard">Back to DashBoard</a>
 </div>
 

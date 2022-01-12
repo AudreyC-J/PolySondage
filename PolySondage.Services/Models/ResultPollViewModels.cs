@@ -11,6 +11,7 @@ namespace PolySondage.Services.Models
     {
         public List<Choice> OptionsOrdered { get; set; }
         public string Title { get; set; }
+        public int idPoll { get; set; }
 
         public ResultPollViewModels()
         {

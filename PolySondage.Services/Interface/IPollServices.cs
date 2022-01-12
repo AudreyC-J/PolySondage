@@ -25,5 +25,7 @@ namespace PolySondage.Services.Interface
         Task<List<Choice>> GetChoicesUserPollAsync(int idPoll, int idUser);
 
         Task<ResultPollViewModels> GetResultPollAsync(int idPoll);
+
+        Task<Choice> GetChoiceByIdAsync(int idChoice);
     }
 }

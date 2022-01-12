@@ -68,7 +68,6 @@ namespace PolySondage.Controllers
             List<Choice> pastvote = await _pollServices.GetChoicesUserPollAsync(idUser,id);
             v.SelectedChoices = pastvote;
             v.FirstUserVote = (pastvote.Count() == 0 ? true : false);
-            Debug.WriteLine(v.FirstUserVote);
             return View(v);              
         }
 
@@ -76,25 +75,28 @@ namespace PolySondage.Controllers
         [Authorize]
         public async Task<IActionResult> Vote(SelectedChoicesViewModels v)
         {
-            Debug.WriteLine(v.idPoll);
-            Debug.WriteLine(v.FirstUserVote);
-            Debug.WriteLine(v.selectedChoicesId[0]);
             var tmp = v.selectedChoicesId[0].Split(',', System.StringSplitOptions.TrimEntries).ToList();
-            return Ok(v.idPoll);
-            /*var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
+            List<Choice> selectedChoice = new List<Choice>();
+            foreach (var item in tmp) 
+            {
+                Choice c = await _pollServices.GetChoiceByIdAsync(Int32.Parse(item));
+                selectedChoice.Add(c);
+            }
+            var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
             int idUser = Int32.Parse(idString);
             if (v.FirstUserVote)
-                await _pollServices.AddVotePollAsync(v.SelectedChoices, idUser, v.IdPoll);
+                await _pollServices.AddVotePollAsync(selectedChoice, idUser, Int32.Parse(v.idPoll));
             else
-                await _pollServices.UpdateVotePollAsync(v.SelectedChoices, idUser, v.IdPoll);
+                await _pollServices.UpdateVotePollAsync(selectedChoice, idUser, Int32.Parse(v.idPoll));
             
-            return Redirect("Resultat/" + v.IdPoll);*/
+            return Ok(v.idPoll);
         }
 
         [HttpGet]
         public async Task<IActionResult> Resultat(int id) 
         {
            ResultPollViewModels r = await _pollServices.GetResultPollAsync(id);
+           r.idPoll = id;
            return View(r);
         }
     }

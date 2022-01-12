@@ -16,6 +16,8 @@ namespace PolySondage.Data.Repositories
         Task<int> GetNumberUserVotePollAsync(int idPoll);
         Task<List<Poll>> GetPollCreatorAsync(int idCreator);
         Task<List<Choice>> GetChoicesPollByIdAsync(int idPoll);
+        Task<Choice> GetChoiceByIdAsync(int idChoice);
+
     }
 }
  

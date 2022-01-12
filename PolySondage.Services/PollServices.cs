@@ -86,5 +86,8 @@ namespace PolySondage.Services
 
         public async Task<List<Choice>> GetChoicesUserPollAsync(int idPoll, int idUser)
              => await _voteRepo.GetUserChoicesPollAsync(idUser, idPoll);
+
+        public async Task<Choice> GetChoiceByIdAsync(int idChoice)
+            => await _pollRepo.GetChoiceByIdAsync(idChoice);
     }
 }

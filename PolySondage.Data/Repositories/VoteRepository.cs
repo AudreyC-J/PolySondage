@@ -67,6 +67,7 @@ namespace PolySondage.Data.Repositories
         {
             List<Vote> vote = await _dbcontext.Votes.Include(v => v.User).ToListAsync();
             List<Vote> list = vote.Where(u => u.User.IdUser == idUser).ToList();
+            list = list.Distinct().ToList();
             List<Poll> p = new List<Poll>();
             foreach (Vote v in list)
             {
