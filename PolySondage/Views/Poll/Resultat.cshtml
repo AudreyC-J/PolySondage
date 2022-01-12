@@ -5,32 +5,66 @@
 }
 
 <h1>Resultat</h1>
+<div class="row">
+    <div class="col-8">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayFor(model => model.Title)
+            </dt>
+        </dl>
+        <table class="table">
+            <tbody>
+                @foreach (var item in Model.OptionsOrdered)
+                {
+                    <tr>
+                        <td class="details" data-choice="@Html.DisplayFor(modelItem => item.Details)">
+                            @Html.DisplayFor(modelItem => item.Details)
+                        </td>
+                        <td class="nbVote" data-vote="@Html.DisplayFor(modelItem => item.TotalVotes)">
+                            @Html.DisplayFor(modelItem => item.TotalVotes)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-4">
+        <canvas id="myChart" width="400" height="400"></canvas>
+    </div>
+</div>
 
 <div>
-    <h4>ResultPollViewModels</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-    </dl>
-    <table class="table">
-        <tbody>
-            @foreach (var item in Model.OptionsOrdered)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Details)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TotalVotes)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    @Html.ActionLink("Vote", "Edit Vote", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-controller="Home" asp-action="DashBoard">Back to DashBoard</a>
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        $(document).ready(() => {
+            var data = [];
+            var tds = $(".nbVote").each(function () {
+                data.push($(this).data('vote'));
+            });
+            var detail = [];
+            var tdc = $(".details").each(function () {
+                detail.push($(this).data('choice'));
+            });
+            console.log(detail);
+            const ctx = $('#myChart');
+            const myChart = new Chart(ctx, {
+
+                type: 'doughnut',
+                data: {
+                    labels: detail,
+                    datasets: [{
+                        label: '# of Votes',
+                        data: data,
+                        borderWidth: 1
+                    }]
+                },
+            });
+        });
+    </script>
+}
+
