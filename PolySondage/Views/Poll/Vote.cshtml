@@ -12,10 +12,17 @@
         <form asp-action="Vote" id="form" data-id="@Html.DisplayFor(model => model.IdPoll)" data-voted="true">
             @foreach (var item in Model.Choices)
             {
-                <div class="form-group row">
-                    <input class="col-1 custom-checkbox" type="checkbox" data-idChoice="@Html.DisplayFor(model => item.IdChoice)"/>
-                    <p class="col-11">@Html.DisplayFor(model => item.Details)</p>
-                </div>
+            <div class="form-group row">
+                @if (Model.Unique)
+                {
+                    <input name="radioBox" class="col-1 custom-checkbox" type="radio" data-idChoice="@Html.DisplayFor(model => item.IdChoice)" />
+                }
+                else
+                {
+                    <input class="col-1 custom-checkbox" type="checkbox" data-idChoice="@Html.DisplayFor(model => item.IdChoice)" />
+                }
+                <p class="col-11">@Html.DisplayFor(model => item.Details)</p>
+            </div>
             }
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

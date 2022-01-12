@@ -40,7 +40,6 @@ namespace PolySondage.Controllers
             p.Unique = c.Unique=="true"?true:false;
             var tmp = c.Choices[0].Split(',', System.StringSplitOptions.TrimEntries);
             List<Choice> listOption = tmp.Select(option => new Choice { Details = option }).ToList();
-            listOption.RemoveAt(listOption.Count - 1);
             p.Choices = listOption;
             var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
             int idUser = Int32.Parse(idString);
