@@ -69,6 +69,7 @@ namespace PolySondage.Controllers
             List<Choice> pastvote = await _pollServices.GetChoicesUserPollAsync(idUser,id);
             v.SelectedChoices = pastvote;
             v.FirstUserVote = (pastvote.Count() == 0 ? true : false);
+            Debug.WriteLine(v.Choices.Count());
             
             return View(v);              
         }

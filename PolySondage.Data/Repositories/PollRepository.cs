@@ -62,8 +62,8 @@ namespace PolySondage.Data.Repositories
             return p;
         }
 
-        public Task<Poll> GetPollByIdAsync(int idPoll)
-            => _dbcontext.Polls.FirstOrDefaultAsync(p => p.IdPoll == idPoll);
+        public async Task<Poll> GetPollByIdAsync(int idPoll)
+            => await _dbcontext.Polls.FirstOrDefaultAsync(p => p.IdPoll == idPoll);
 
         public async Task<bool> IsPollActivateAsync(int idPoll)
         {
