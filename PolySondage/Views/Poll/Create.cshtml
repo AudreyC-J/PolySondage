@@ -1,7 +1,7 @@
-﻿@model PolySondage.Data.Models.Poll
+﻿@model PolySondage.Services.Models.CreateViewModels
 
 @{
-    ViewData["Title"] = "Created";
+    ViewData["Title"] = "Create";
 }
 
 <h1>Creation Sondage</h1>
@@ -9,27 +9,34 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Created">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form id="form">
+            <div class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <input id="title" class="form-control" />
+                <span class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Unique" /> @Html.DisplayNameFor(model => model.Unique)
+                    <input id="unique" class="form-check-input" type="checkbox"/>
                 </label>
+            </div>
+            <div class="form-group">
+                <input class="form-control choices" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input class="form-control choices" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input class="form-control choices" />
+                <span class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
@@ -39,6 +46,7 @@
 	//gestion des ajouts de champs dynamique
     //envoi du From au controleur
         $(document).ready(() => {
+<<<<<<< HEAD
 
             $('.choices:last').change(e => {
                 //ajout champ dynamiquement
@@ -49,10 +57,31 @@
 
 
             $('form').submit(e => {
+=======
+            addInput();
+
+            function addInput() {
+                $('.choices:last').change(function () {
+                    //ajout champ dynamiquement
+                    let lastChoice = $('.choices:last');
+                    let newChoice = $('.choices:last').parent().clone();
+                    newChoice.children().val('');
+                    newChoice.insertAfter(lastChoice.parent());
+                    //faire un bind de ce callback sur le input créé
+                    addInput();
+                })
+            };
+            
+
+
+
+            $('#form').submit(e => {
+>>>>>>> CreatePollForm
                 e.preventDefault();
                 //construire l'objet data equivalent à la classe Poll
                 var data = new FormData();
                 data.append('title', $('#title').val());
+<<<<<<< HEAD
                 var choices = $('input.choices').map(i => i.val());
                 data.append('choices', choices);
                 //...
@@ -72,6 +101,31 @@
                 })
                 'poll/detail/5'
                 'poll/detail?test=5&toto=5&yeah=0&wat=true'9-*
+=======
+                var choices = [];
+                $('input.choices').each( function (i) {
+                    choices.push($(this).val());
+                });
+                data.append('choices', choices);
+                data.append('unique', $('#unique').is(':checked'));
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'Create',
+                    data: data,
+                    method: 'post',
+                    contentType: false,
+                    success: response => {
+                        //action en cas de réussite
+                        //window.location.href = '/index?poll=' + response;
+                        console.log(data);
+                    },
+                    error: error => {
+                        //action en cas d'erreur (message ?)
+                    },
+                    processData: false,
+                });
+>>>>>>> CreatePollForm
 
             })
         });
