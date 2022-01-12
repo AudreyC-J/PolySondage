@@ -70,8 +70,10 @@
                 var data = new FormData();
                 data.append('title', $('#title').val());
                 var choices = [];
-                $('input.choices').each( function (i) {
-                    choices.push($(this).val());
+                $('input.choices').each(function () {
+                    if ($(this).val().replace(/^\s+|\s+$/g, "").length != 0) {
+                        choices.push($(this).val());
+                    }
                 });
                 data.append('choices', choices);
                 data.append('unique', $('#unique').is(':checked'));
