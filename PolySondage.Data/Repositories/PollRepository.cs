@@ -49,8 +49,12 @@ namespace PolySondage.Data.Repositories
         }
 
 
-        public Task<List<Poll>> GetPollCreatorAsync(int idCreator)
-            => _dbcontext.Polls.Include(p => p.Creator.IdUser == idCreator).ToListAsync();
+        public async Task<List<Poll>> GetPollCreatorAsync(int idCreator)
+        { 
+            User u = await _dbcontext.Users.FirstOrDefaultAsync(u => u.IdUser == idCreator);
+            return u.PollsCreated;
+                //await _dbcontext.Polls.Include(p => p.Creator == u).ToListAsync();
+        }
 
         public Task<Poll> GetPollByIdAsync(int idPoll)
             => _dbcontext.Polls.FirstOrDefaultAsync(p => p.IdPoll == idPoll);

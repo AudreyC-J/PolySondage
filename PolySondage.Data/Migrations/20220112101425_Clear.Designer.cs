@@ -10,8 +10,8 @@ using PolySondage.Data;
 namespace PolySondage.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220107093646_addTotalVoteInPoll")]
-    partial class addTotalVoteInPoll
+    [Migration("20220112101425_Clear")]
+    partial class Clear
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

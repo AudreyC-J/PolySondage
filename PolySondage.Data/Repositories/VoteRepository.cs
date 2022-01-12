@@ -23,9 +23,10 @@ namespace PolySondage.Data.Repositories
 
             Vote vote = new Vote();
             vote.Choices = choice;
-            vote.User = await _dbcontext.Users.FirstOrDefaultAsync(u => u.IdUser == idUser);
+            User u = await _dbcontext.Users.FirstOrDefaultAsync(u => u.IdUser == idUser);
             Poll p = await _dbcontext.Polls.FirstOrDefaultAsync(u => u.IdPoll == idPoll);
             p.NumberTotalVote += 1;
+            vote.User = u;
             vote.Poll = p;
 
             foreach (Choice c in choice)
@@ -64,9 +65,10 @@ namespace PolySondage.Data.Repositories
 
         public async Task<List<Poll>> GetPaticipatedPollsByIdUserAsync(int idUser)
         {
-            List<Vote> vote = await _dbcontext.Votes.Include(v => v.User.IdUser == idUser).ToListAsync();
+            List<Vote> vote = await _dbcontext.Votes.Include(v => v.User).ToListAsync();
+            List<Vote> list = vote.Where(u => u.User.IdUser == idUser).ToList();
             List<Poll> p = new List<Poll>();
-            foreach (Vote v in vote)
+            foreach (Vote v in list)
             {
                 Poll tmp = await _dbcontext.Polls.FirstAsync(t => t.IdPoll == v.Poll.IdPoll);
                 p.Add(tmp);
@@ -76,7 +78,7 @@ namespace PolySondage.Data.Repositories
 
         public async Task<List<Choice>> GetUserChoicesPollAsync(int idUser, int idPoll)
         {
-            Vote v = await _dbcontext.Votes.FirstOrDefaultAsync(v => v.Poll.IdPoll == idPoll && v.User.IdUser == idUser);
+            Vote v = await _dbcontext.Votes.FirstOrDefaultAsync(v => v.Poll.IdPoll == idPoll);
             return v.Choices;
         }
     }

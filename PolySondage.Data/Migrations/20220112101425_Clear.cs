@@ -2,7 +2,7 @@
 
 namespace PolySondage.Data.Migrations
 {
-    public partial class changementId : Migration
+    public partial class Clear : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace PolySondage.Data.Migrations
                     IdUser = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,7 +29,8 @@ namespace PolySondage.Data.Migrations
                     CreatorIdUser = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Unique = table.Column<bool>(type: "bit", nullable: false),
-                    Activate = table.Column<bool>(type: "bit", nullable: false)
+                    Activate = table.Column<bool>(type: "bit", nullable: false),
+                    NumberTotalVote = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,7 +77,7 @@ namespace PolySondage.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PollIdPoll = table.Column<int>(type: "int", nullable: false),
                     Details = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Vote = table.Column<int>(type: "int", nullable: false),
+                    TotalVotes = table.Column<int>(type: "int", nullable: false),
                     VoteIdVote = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

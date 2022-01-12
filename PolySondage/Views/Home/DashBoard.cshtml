@@ -5,42 +5,65 @@
 }
 
 <h1>DashBord</h1>
+<div style="display: flex; flex-direction: row; flex: 50%; ">
+    <div width=50%>
+        <div style="display: flex">
+            <h2>Mes sondage</h2>
+            <button  asp-controller="Poll" asp-action="Create" type="button" class="btn btn-success">Créer</button>
+        </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <tbody>
-    @foreach(var item in Model.created) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberVote)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Activated)
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-<table class="table">
-    <tbody>
-        @foreach (var item in Model.participated)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumberVote)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Activated)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <table class="table table-sm">
+            <tbody>
+                @foreach (var item in Model.created)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumberVote)
+                        </td>
+                        <td>
+                            @if (item.Activated)
+                            {
+                                <button type="button" class="btn btn-danger">Desactiver</button>
+                            }
+                            else
+                            {
+                                <button disabled type="button" class="btn btn-secondary">Desactiver</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div width=50% style="flex: 50%">
+        <h2>Mes votes</h2>
+        <table class="table table-sm">
+            <tbody>
+                @foreach (var item in Model.participated)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumberVote)
+                        </td>
+                        <td>
+                            @if (item.Activated)
+                            {
+                                <i class="large material-icons">lock_open</i>
+                            }
+                            else
+                            {
+                                <i class="large material-icons">lock</i>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

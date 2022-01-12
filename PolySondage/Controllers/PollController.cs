@@ -34,7 +34,7 @@ namespace PolySondage.Controllers
             var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
             int idUser = Int32.Parse(idString);
             int idPoll = await _pollServices.CreatedPollAsync(p, idUser);
-            return Redirect("Vote/"+idPoll);
+            return Ok(idPoll);
         }
 
        [HttpGet("{idPoll}")]

@@ -34,6 +34,12 @@ namespace PolySondage.Controllers
             return View();
         }
 
+        public async Task<IActionResult> LogOut() 
+        {
+            await _service.LogoutAysnc();
+            return Redirect("Auth/Connect");
+        }
+
         public IActionResult Inscription()
         {
             return View();
