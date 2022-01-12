@@ -68,23 +68,27 @@ namespace PolySondage.Controllers
             List<Choice> pastvote = await _pollServices.GetChoicesUserPollAsync(idUser,id);
             v.SelectedChoices = pastvote;
             v.FirstUserVote = (pastvote.Count() == 0 ? true : false);
-            Debug.WriteLine(v.Choices.Count());
-            
+            Debug.WriteLine(v.FirstUserVote);
             return View(v);              
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Vote(PageVoteViewModels v)
+        public async Task<IActionResult> Vote(SelectedChoicesViewModels v)
         {
-            var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
+            Debug.WriteLine(v.idPoll);
+            Debug.WriteLine(v.FirstUserVote);
+            Debug.WriteLine(v.selectedChoicesId[0]);
+            var tmp = v.selectedChoicesId[0].Split(',', System.StringSplitOptions.TrimEntries).ToList();
+            return Ok(v.idPoll);
+            /*var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
             int idUser = Int32.Parse(idString);
             if (v.FirstUserVote)
                 await _pollServices.AddVotePollAsync(v.SelectedChoices, idUser, v.IdPoll);
             else
                 await _pollServices.UpdateVotePollAsync(v.SelectedChoices, idUser, v.IdPoll);
-
-            return Redirect("Resultat/" + v.IdPoll);
+            
+            return Redirect("Resultat/" + v.IdPoll);*/
         }
 
         [HttpGet]

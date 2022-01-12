@@ -45,7 +45,6 @@ namespace PolySondage.Services
         public async Task<List<InformationDashBoardViewModels>> GetPollParticipatedAsync(int idUser)
         {
             List<Poll> pollparticipated = await _voteRepo.GetPaticipatedPollsByIdUserAsync(idUser);
-            Debug.WriteLine(pollparticipated.Count);
             List<InformationDashBoardViewModels> result = new List<InformationDashBoardViewModels>();
             foreach (Poll p in pollparticipated)
             {

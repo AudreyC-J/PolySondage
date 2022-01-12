@@ -9,11 +9,11 @@
 <hr/>
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Vote">
+        <form asp-action="Vote" id="form" data-id="@Html.DisplayFor(model => model.IdPoll)" data-voted="true">
             @foreach (var item in Model.Choices)
             {
                 <div class="form-group row">
-                    <input class="col-1" type="checkbox" />
+                    <input class="col-1 custom-checkbox" type="checkbox" data-idChoice="@Html.DisplayFor(model => item.IdChoice)"/>
                     <p class="col-11">@Html.DisplayFor(model => item.Details)</p>
                 </div>
             }
@@ -25,9 +25,45 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Home" asp-action="DashBoard">DashBoard</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script> 
+        $(document).ready(() => {
+
+            $('#form').submit(e => {
+                e.preventDefault();
+                //construire l'objet data equivalent à la classe Poll
+                var data = new FormData();
+                data.append('idPoll', $('#form').data('id'));
+                var choices = [];
+                $('input:checked').each( function () {
+                    choices.push($(this).data('idchoice'));
+                });
+                data.append('selectedChoicesId', choices);
+                data.append('firstUserVote', $('#form').data('voted'));
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'Vote',
+                    data: data,
+                    method: 'post',
+                    contentType: false,
+                    success: response => {
+                        //action en cas de réussite
+                        //window.location.href = 'Vote/' + response;
+
+                    },
+                    error: error => {
+                        //action en cas d'erreur (message ?)
+                    },
+                    processData: false,
+                });
+
+            })
+        });
+
+    </script>
 }
