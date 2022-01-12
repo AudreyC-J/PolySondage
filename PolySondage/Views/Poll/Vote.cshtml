@@ -12,9 +12,9 @@
         <form asp-action="Vote">
             @foreach (var item in Model.Choices)
             {
-                <div class="form-group">
-                    <input type="checkbox" />
-                    <p>@Html.DisplayFor(model => item.Details)</p>
+                <div class="form-group row">
+                    <input class="col-1" type="checkbox" />
+                    <p class="col-11">@Html.DisplayFor(model => item.Details)</p>
                 </div>
             }
             <div class="form-group">
