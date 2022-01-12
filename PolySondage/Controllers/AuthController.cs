@@ -5,19 +5,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using PolySondage.Services.Interface;
 using PolySondage.Services.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace PolySondage.Controllers
 {
     public class AuthController : Controller
     {
         private readonly IAuthServices _service;
-        public AuthController(IAuthServices servi)
+        private readonly HttpContext _HttpContext;
+        public AuthController(IHttpContextAccessor contextAccessor,IAuthServices servi)
         {
             _service = servi;
+            _HttpContext = contextAccessor.HttpContext;
         }
         public IActionResult Connect()
         {
-            return View();
+            var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
+            if (idString == "0")
+                return View();
+            else
+                return Redirect("/Home/DashBoard");
         }
 
         [HttpPost]

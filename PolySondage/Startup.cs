@@ -46,7 +46,7 @@ namespace PolySondage
                 {
                     config.LoginPath = "/auth/connect";
                     config.LogoutPath = "/auth/disconnect";
-                    config.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                    config.ExpireTimeSpan = TimeSpan.FromMinutes(60);
                     config.SlidingExpiration = true;
                     config.Cookie.IsEssential = true;
                 });

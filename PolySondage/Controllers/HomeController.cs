@@ -32,7 +32,7 @@ namespace PolySondage.Controllers
         }
         public IActionResult Index() 
         {
-            return Redirect("/Poll/Create");
+            return Redirect("/Auth/Connect");
         }
 
         [Authorize(Roles = "Connected")]

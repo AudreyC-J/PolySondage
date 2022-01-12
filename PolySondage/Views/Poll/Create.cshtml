@@ -46,18 +46,6 @@
 	//gestion des ajouts de champs dynamique
     //envoi du From au controleur
         $(document).ready(() => {
-<<<<<<< HEAD
-
-            $('.choices:last').change(e => {
-                //ajout champ dynamiquement
-
-                //faire un bind de ce callback sur le input créé
-            })
-
-
-
-            $('form').submit(e => {
-=======
             addInput();
 
             function addInput() {
@@ -71,37 +59,13 @@
                     addInput();
                 })
             };
-            
-
 
 
             $('#form').submit(e => {
->>>>>>> CreatePollForm
                 e.preventDefault();
                 //construire l'objet data equivalent à la classe Poll
                 var data = new FormData();
                 data.append('title', $('#title').val());
-<<<<<<< HEAD
-                var choices = $('input.choices').map(i => i.val());
-                data.append('choices', choices);
-                //...
-
-                $.ajax({
-                    data: data,
-                    url: '/poll/create',
-                    method: 'post',
-                    contentType: 'application/json',
-                    success: response => {
-                        //action en cas de réussite
-                        window.location.href = '/index?poll=' + response;
-                    },
-                    error: error => {
-                        //action en cas d'erreur (message ?)
-                    }    
-                })
-                'poll/detail/5'
-                'poll/detail?test=5&toto=5&yeah=0&wat=true'9-*
-=======
                 var choices = [];
                 $('input.choices').each( function (i) {
                     choices.push($(this).val());
@@ -117,15 +81,14 @@
                     contentType: false,
                     success: response => {
                         //action en cas de réussite
-                        //window.location.href = '/index?poll=' + response;
-                        console.log(data);
+                        window.location.href = 'Vote/' + response;
+
                     },
                     error: error => {
                         //action en cas d'erreur (message ?)
                     },
                     processData: false,
                 });
->>>>>>> CreatePollForm
 
             })
         });
