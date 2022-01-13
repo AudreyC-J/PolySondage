@@ -19,7 +19,7 @@
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input id="unique" class="form-check-input" type="checkbox"/>
-                    <p>Chocher pour autoriser les multiples réponses</p>
+                    <p>Cocher pour autoriser les multiples réponses</p>
                 </label>
             </div>
             <h5>Remplissez les réponses possibles :</h5>
@@ -76,7 +76,8 @@
                     }
                 });
                 data.append('choices', choices);
-                data.append('unique', $('#unique').is(':checked'));
+                var check = $('#unique').is(':checked')
+                data.append('unique', !check);
 
                 $.ajax({
                     type: 'POST',
