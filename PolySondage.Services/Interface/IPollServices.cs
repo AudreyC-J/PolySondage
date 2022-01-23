@@ -14,18 +14,20 @@ namespace PolySondage.Services.Interface
 
         Task<List<InformationDashBoardViewModels>> GetPollParticipatedAsync(int idUser);
 
-        Task<int> CreatedPollAsync(Poll p, int idUser);
+        Task<int> CreatedPollAsync(CreateViewModels c, int idUser);
 
-        Task<Poll> GetPollAsync(int idPoll);
+        Task<PageVoteViewModels> GetPollAsync(int idPoll);
 
-        Task AddVotePollAsync(List<Choice> c, int idUser, int idPoll);
+        Task AddVotePollAsync(List<string> t, int idUser, int idPoll);
 
-        Task UpdateVotePollAsync(List<Choice> c, int idUser, int idPoll);
+        Task UpdateVotePollAsync(List<string> t, int idUser, int idPoll);
 
         Task<List<Choice>> GetChoicesUserPollAsync(int idPoll, int idUser);
 
         Task<ResultPollViewModels> GetResultPollAsync(int idPoll);
 
         Task<Choice> GetChoiceByIdAsync(int idChoice);
+
+        Task<bool> IsPollActiveAsync(int idPoll);
     }
 }

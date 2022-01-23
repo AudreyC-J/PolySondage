@@ -35,15 +35,9 @@ namespace PolySondage.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateViewModels c)
         {
-            Poll p = new Poll();
-            p.Title = c.Title;
-            p.Unique = c.Unique=="true"?true:false;
-            var tmp = c.Choices[0].Split(',', System.StringSplitOptions.TrimEntries);
-            List<Choice> listOption = tmp.Select(option => new Choice { Details = option }).ToList();
-            p.Choices = listOption;
             var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
             int idUser = Int32.Parse(idString);
-            int idPoll = await _pollServices.CreatedPollAsync(p, idUser);
+            int idPoll = await _pollServices.CreatedPollAsync(c, idUser);
             return Ok(idPoll);
         }
 
@@ -51,18 +45,14 @@ namespace PolySondage.Controllers
         [HttpGet]
         public async Task<IActionResult> Vote(int id) 
         {
-            Poll p = await _pollServices.GetPollAsync(id);
-            if (!p.Activate)
-                return Redirect("Resultat/" + id);
+            bool activate = await _pollServices.IsPollActiveAsync(id);
+            if (!activate)
+                return Redirect("/Resultat/" + id);
 
             var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
             int idUser = Int32.Parse(idString);
 
-            PageVoteViewModels v = new PageVoteViewModels();
-            v.IdPoll = p.IdPoll;
-            v.Title = p.Title;
-            v.Unique = p.Unique;
-            v.Choices = p.Choices;
+            PageVoteViewModels v = await _pollServices.GetPollAsync(id);
 
             List<Choice> pastvote = await _pollServices.GetChoicesUserPollAsync(idUser,id);
             v.SelectedChoices = pastvote;
@@ -74,19 +64,14 @@ namespace PolySondage.Controllers
         [Authorize]
         public async Task<IActionResult> Vote(SelectedChoicesViewModels v)
         {
-            var tmp = v.selectedChoicesId[0].Split(',', System.StringSplitOptions.TrimEntries).ToList();
-            List<Choice> selectedChoice = new List<Choice>();
-            foreach (var item in tmp) 
-            {
-                Choice c = await _pollServices.GetChoiceByIdAsync(Int32.Parse(item));
-                selectedChoice.Add(c);
-            }
+            var t = v.selectedChoicesId[0].Split(',', System.StringSplitOptions.TrimEntries).ToList();
+
             var idString = _HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
             int idUser = Int32.Parse(idString);
             if (v.FirstUserVote)
-                await _pollServices.AddVotePollAsync(selectedChoice, idUser, Int32.Parse(v.idPoll));
+                await _pollServices.AddVotePollAsync(t, idUser, Int32.Parse(v.idPoll));
             else
-                await _pollServices.UpdateVotePollAsync(selectedChoice, idUser, Int32.Parse(v.idPoll));
+                await _pollServices.UpdateVotePollAsync(t, idUser, Int32.Parse(v.idPoll));
             
             return Ok(v.idPoll);
         }
